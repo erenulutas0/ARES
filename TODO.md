@@ -27,6 +27,7 @@
 - [x] ML Model Training (Random Forest) for Urgency Prediction
 - [x] Basic Dashboard (WebSocket + Redis Integration)
 - [x] Connect local alarm decisions to dashboard status cards
+- [x] Serve web dashboard from FastAPI at `/dashboard`
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis

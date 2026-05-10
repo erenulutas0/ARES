@@ -134,6 +134,12 @@ pytest -q
 uvicorn src.server.main:app --reload
 ```
 
+Open the dashboard:
+
+```text
+http://localhost:8000/dashboard
+```
+
 ### 4. Run mock multi-building simulation
 
 ```bash

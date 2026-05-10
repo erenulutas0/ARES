@@ -404,12 +404,12 @@
         function downloadReport() {
             if (lastBuildingsState.length === 0) return alert("No data available to export.");
             
-            const headers = ['Building ID', 'Type', 'Priority', 'Expert Score', 'AI Score', 'Occupancy', 'PGA (g)', 'Smoke', 'Gas', 'Last Update'];
+            const headers = ['Building ID', 'Type', 'Priority', 'Expert Score', 'AI Score', 'Local Alarm', 'Occupancy', 'PGA (g)', 'Smoke', 'Gas', 'Last Update'];
             let csvContent = "data:text/csv;charset=utf-8," + headers.join(',') + "\n";
             
             lastBuildingsState.forEach(b => {
                 const row = [
-                    b.building_id, b.type, b.priority, b.urgency_score, b.ai_score || '',
+                    b.building_id, b.type, b.priority, b.urgency_score, b.ai_score || '', b.local_alarm_level || 'NORMAL',
                     b.occupancy, b.pga.toFixed(4), b.smoke_detected, b.gas_detected, b.last_update
                 ];
                 csvContent += row.join(',') + "\n";
@@ -513,6 +513,9 @@
             } else if (b.gas_detected) {
                 eventId = `${b.building_id}-gas-${b.last_update}`;
                 alertMsg = `<span class="text-high font-bold">GAS LEAK:</span> ${b.building_id} detected gas!`;
+            } else if (b.local_alarm_triggered && b.local_alarm_level === 'CRITICAL') {
+                eventId = `${b.building_id}-edge-${b.last_update}`;
+                alertMsg = `<span class="text-critical font-bold">EDGE ALARM:</span> ${b.building_id} local hub triggered ${b.local_alarm_level}`;
             } else if (b.pga > 0.15 && !loggedEvents.has(`${b.building_id}-quake-${Math.floor(Date.now()/60000)}`)) {
                 // Log strong shaking at most once per minute
                 eventId = `${b.building_id}-quake-${Math.floor(Date.now()/60000)}`;
@@ -539,6 +542,14 @@
                 'LOW': { border: 'border-dark-700', bg: 'bg-dark-900/30', text: 'text-low' }
             };
             const c = colors[b.priority] || colors['LOW'];
+            const alarmLevel = b.local_alarm_level || 'NORMAL';
+            const alarmStyles = {
+                'CRITICAL': 'bg-critical/20 text-critical border-critical/40',
+                'WARNING': 'bg-medium/20 text-medium border-medium/40',
+                'NORMAL': 'bg-low/10 text-low border-low/20'
+            };
+            const alarmClass = alarmStyles[alarmLevel] || alarmStyles['NORMAL'];
+            const alarmReasons = (b.local_alarm_reasons || []).join(', ') || 'monitoring';
 
             let hazards = '';
             if(b.smoke_detected) hazards += `<span class="bg-critical/20 text-critical text-[10px] px-1.5 py-0.5 rounded uppercase font-bold border border-critical/30">Smoke</span> `;
@@ -572,7 +583,10 @@
                             <div class="font-medium text-sm text-slate-200">${b.pga.toFixed(3)} <span class="text-[10px] text-slate-500">g</span></div>
                         </div>
                     </div>
-                    ${hazards ? `<div class="mt-2 flex gap-1">${hazards}</div>` : ''}
+                    <div class="mt-2 flex flex-wrap gap-1 items-center">
+                        <span title="${alarmReasons}" class="${alarmClass} text-[10px] px-1.5 py-0.5 rounded uppercase font-bold border">Edge Alarm: ${alarmLevel}</span>
+                        ${hazards}
+                    </div>
                 </div>
             `;
         }

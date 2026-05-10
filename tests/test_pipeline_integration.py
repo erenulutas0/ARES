@@ -1,4 +1,5 @@
 from src.server.urgency_engine import calculate_urgency_score
+from src.edge.local_alarm import evaluate_local_alarm
 
 
 def test_sensor_and_occupancy_payloads_produce_rankable_building_state():
@@ -34,3 +35,12 @@ def test_sensor_and_occupancy_payloads_produce_rankable_building_state():
     assert result["score"] >= 70
     assert result["breakdown"]["occupancy"] == 100
     assert result["breakdown"]["hazards"] == 100
+
+    alarm = evaluate_local_alarm(
+        pga=state["pga"],
+        smoke_detected=state["smoke_detected"],
+        gas_detected=state["gas_detected"],
+    )
+
+    assert alarm.trigger is True
+    assert alarm.level == "CRITICAL"

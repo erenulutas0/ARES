@@ -6,6 +6,7 @@ import threading
 import asyncio
 from datetime import datetime
 from .urgency_engine import calculate_urgency_score
+from src.edge.local_alarm import evaluate_local_alarm
 import os
 import joblib
 
@@ -50,9 +51,13 @@ def on_message(client, userdata, msg):
             building_states[building_id] = {
                 "building_id": building_id,
                 "occupancy": 0, "pga": 0.0, "vulnerability": 0.5,
-                "smoke_detected": False, "gas_detected": False,
+                "smoke_detected": False, "gas_detected": False, "temperature": 22.0,
                 "lat": 0.0, "lon": 0.0, "type": "Unknown",
-                "ai_score": 0
+                "ai_score": 0,
+                "local_alarm_triggered": False,
+                "local_alarm_level": "NORMAL",
+                "local_alarm_reasons": [],
+                "local_alarm_action": "Continue monitoring."
             }
 
         state = building_states[building_id]
@@ -61,6 +66,7 @@ def on_message(client, userdata, msg):
             state["pga"] = payload.get("pga", state["pga"])
             state["smoke_detected"] = payload.get("smoke_detected", state["smoke_detected"])
             state["gas_detected"] = payload.get("gas_detected", state["gas_detected"])
+            state["temperature"] = payload.get("temperature", state["temperature"])
             state["lat"] = payload.get("lat", state["lat"])
             state["lon"] = payload.get("lon", state["lon"])
             state["type"] = payload.get("type", state["type"])
@@ -88,11 +94,22 @@ def on_message(client, userdata, msg):
                 'fire_detected': int(state["smoke_detected"] or state["gas_detected"])
             }])
             ai_score = int(ml_model.predict(features)[0])
+
+        local_alarm = evaluate_local_alarm(
+            pga=state["pga"],
+            smoke_detected=state["smoke_detected"],
+            gas_detected=state["gas_detected"],
+            temperature=state["temperature"],
+        )
         
         state.update({
             "urgency_score": res["score"],
             "ai_score": ai_score,
             "priority": res["priority"],
+            "local_alarm_triggered": local_alarm.trigger,
+            "local_alarm_level": local_alarm.level,
+            "local_alarm_reasons": local_alarm.reasons,
+            "local_alarm_action": local_alarm.recommended_action,
             "last_update": datetime.utcnow().isoformat() + "Z"
         })
 

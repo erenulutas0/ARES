@@ -15,6 +15,7 @@ venv/
 *.log
 test_results.json
 *.pt
+*.zip
 *.mp4
 *.mov
 *.avi

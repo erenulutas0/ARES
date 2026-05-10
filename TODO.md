@@ -26,7 +26,7 @@
 - [x] Synthetic Dataset Generation (10,000 scenarios)
 - [x] ML Model Training (Random Forest) for Urgency Prediction
 - [x] Basic Dashboard (WebSocket + Redis Integration)
-- [ ] Connect local alarm decisions to dashboard status cards
+- [x] Connect local alarm decisions to dashboard status cards
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis

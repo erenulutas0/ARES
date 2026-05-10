@@ -14,6 +14,7 @@ A-RES is a university Applied Project Management project that turns buildings in
 | [URGENCY_SCORE.md](URGENCY_SCORE.md) | Scoring formula, examples, priority levels |
 | [TEST_PLAN.md](TEST_PLAN.md) | Test cases, accuracy metrics, targets |
 | [ROADMAP.md](ROADMAP.md) | Week-by-week implementation plan |
+| [NEXT_DEVELOPMENT_ROADMAP.md](NEXT_DEVELOPMENT_ROADMAP.md) | Immediate next development steps for the MVP demo |
 | [RISKS.md](RISKS.md) | Risk register, SWOT analysis |
 | [DECISIONS.md](DECISIONS.md) | Architecture decision records |
 | [PRESENTATION_NOTES.md](PRESENTATION_NOTES.md) | Slide structure, Q&A prep, abstracts |

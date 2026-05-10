@@ -13,8 +13,10 @@
 - [x] Virtual line crossing logic implementation
 - [x] Add line-crossing hysteresis and MQTT sequence numbers for more stable demo events
 - [ ] Test with video files & manual counting comparison
+- [ ] Create a small annotated doorway video dataset: entry, exit, two people, turn-back, empty frame
 - [x] Synthetic Simulator for occupancy & sensors (`src/edge/simulator.py`)
 - [x] Urgency Score Engine implementation (`src/server/urgency_engine.py`)
+- [x] Add local edge alarm decision module for immediate building-level warnings
 
 ## 🟡 Week 3: Central Server, Database & ML
 - [x] FastAPI Backend Implementation (Robust Architecture)
@@ -24,6 +26,7 @@
 - [x] Synthetic Dataset Generation (10,000 scenarios)
 - [x] ML Model Training (Random Forest) for Urgency Prediction
 - [x] Basic Dashboard (WebSocket + Redis Integration)
+- [ ] Connect local alarm decisions to dashboard status cards
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis
@@ -33,12 +36,17 @@
 - [x] GitHub repository/tool selection table for Computer Engineering report
 - [x] Optimization input schema and sample CSV for Industrial Engineering team
 - [ ] Phone-camera doorway video test and manual-vs-detected count comparison
+- [ ] Add final architecture figures to the shared Google Docs report
+- [ ] Prepare 1-page CE summary for presentation slides
 
 ## 🟡 Week 5: Integration & Final Testing
 - [ ] Full System Integration Test
 - [ ] Performance & Latency measurements
+- [ ] Measure MQTT-to-dashboard latency with simulator events
+- [ ] Test local alarm trigger scenarios (severe shaking, smoke, gas, high temperature)
 - [ ] Final Bug Fixes
 - [ ] Demo Video Recording
+- [ ] Record 3-minute demo: simulator → MQTT → FastAPI → dashboard → urgency ranking
 
 ## 🟡 Week 6: Finalization
 - [ ] Final Report (PDF)

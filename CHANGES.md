@@ -22,3 +22,9 @@
 - **Added:** `data/optimization_input_template.csv` with Japan and Istanbul sample building rows for resource allocation experiments.
 - **Changed:** Improved `src/edge/occupancy_counter.py` with line-crossing hysteresis, MQTT sequence numbers, and stable overlay drawing.
 - **Decision:** Keep phone camera usage as a test/video input for the MVP; defer full on-device YOLO inference in the mobile app.
+
+## [2026-05-11] - Next MVP Development Roadmap
+- **Added:** `src/edge/local_alarm.py` with local edge alarm decision logic for immediate building-level warnings.
+- **Added:** `tests/test_local_alarm.py` to validate NORMAL, WARNING, and CRITICAL local alarm scenarios.
+- **Added:** `MD_FILES/NEXT_DEVELOPMENT_ROADMAP.md` to focus the next work on video validation, alarm status, latency, and demo recording.
+- **Changed:** Expanded `TODO.md` with concrete next tasks for doorway video validation, local alarm dashboard integration, latency measurement, and demo video recording.

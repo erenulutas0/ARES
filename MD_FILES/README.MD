@@ -23,6 +23,9 @@ A-RES is a university Applied Project Management project that turns buildings in
 | [GOOGLE_DOCS_CE_WEEK_REPORT_TR.md](GOOGLE_DOCS_CE_WEEK_REPORT_TR.md) | Shorter Turkish CE weekly report text |
 | [GITHUB_REPOSITORY_SELECTION.md](GITHUB_REPOSITORY_SELECTION.md) | Selected open-source repositories and filtering criteria |
 | [OPTIMIZATION_DATA_PACKAGE.md](OPTIMIZATION_DATA_PACKAGE.md) | Data schema for Industrial Engineering optimization |
+| [HYBRID_EDGE_CENTRAL_SYSTEM_EN.md](HYBRID_EDGE_CENTRAL_SYSTEM_EN.md) | English explanation of the hybrid edge + central command system |
+| [HYBRID_EDGE_CENTRAL_SYSTEM_TR.md](HYBRID_EDGE_CENTRAL_SYSTEM_TR.md) | Turkish explanation of the hybrid edge + central command system |
+| [VISUAL_PROMPTS.md](VISUAL_PROMPTS.md) | Prompts for generating system architecture visuals |
 | [agents.md](agents.md) | AI assistant context & coding guidelines |
 
 ## Quick Start (Development)

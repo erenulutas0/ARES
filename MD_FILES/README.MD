@@ -18,6 +18,7 @@ A-RES is a university Applied Project Management project that turns buildings in
 | [DECISIONS.md](DECISIONS.md) | Architecture decision records |
 | [PRESENTATION_NOTES.md](PRESENTATION_NOTES.md) | Slide structure, Q&A prep, abstracts |
 | [COMPUTER_ENGINEERING_WEEK_PLAN.md](COMPUTER_ENGINEERING_WEEK_PLAN.md) | This week's CE deliverables and demo plan |
+| [COMPUTER_ENGINEERING_FULL_REPORT_EN.md](COMPUTER_ENGINEERING_FULL_REPORT_EN.md) | Full English CE technical report for the project report |
 | [COMPUTER_ENGINEERING_FULL_REPORT_TR.md](COMPUTER_ENGINEERING_FULL_REPORT_TR.md) | Full Turkish CE technical report for Google Docs |
 | [GOOGLE_DOCS_CE_WEEK_REPORT_TR.md](GOOGLE_DOCS_CE_WEEK_REPORT_TR.md) | Shorter Turkish CE weekly report text |
 | [GITHUB_REPOSITORY_SELECTION.md](GITHUB_REPOSITORY_SELECTION.md) | Selected open-source repositories and filtering criteria |

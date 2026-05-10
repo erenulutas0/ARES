@@ -13,6 +13,7 @@
 ## [2026-05-10] - Computer Engineering Weekly Evidence Package
 - **Added:** `MD_FILES/COMPUTER_ENGINEERING_WEEK_PLAN.md` to define this week's CE deliverables, demo plan, and mobile app MVP scope.
 - **Added:** `MD_FILES/COMPUTER_ENGINEERING_FULL_REPORT_TR.md` as a comprehensive Turkish report section covering data sources, model strategy, validation, sensor fusion, and laptop-based demo design.
+- **Added:** `MD_FILES/COMPUTER_ENGINEERING_FULL_REPORT_EN.md` as the polished English version of the full Computer Engineering technical report.
 - **Added:** `MD_FILES/GITHUB_REPOSITORY_SELECTION.md` with selected open-source repositories and filtering criteria for the report.
 - **Added:** `MD_FILES/OPTIMIZATION_DATA_PACKAGE.md` to describe the dataset expected by the Industrial Engineering optimization model.
 - **Added:** `data/optimization_input_template.csv` with Japan and Istanbul sample building rows for resource allocation experiments.

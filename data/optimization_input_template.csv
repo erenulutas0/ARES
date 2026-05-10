@@ -1,0 +1,11 @@
+building_id,city,building_type,latitude,longitude,occupancy,pga,vulnerability,smoke_detected,gas_detected,urgency_score,priority,required_rescue_units,required_fire_units,required_medical_units,accessibility_score,last_update_seconds
+JP-001,Tokyo,Metropolitan Hospital,35.6895,139.6917,1200,0.32,0.15,false,false,68,HIGH,3,0,3,85,10
+JP-002,Tokyo,Shinjuku Residence,35.6850,139.6850,240,0.41,0.40,true,false,82,CRITICAL,4,1,2,70,18
+JP-003,Tokyo,Tech Academy,35.6950,139.7000,850,0.24,0.30,false,false,60,MEDIUM,2,0,2,90,22
+JP-004,Tokyo,Industrial Plant,35.6750,139.6700,450,0.38,0.50,true,true,91,CRITICAL,5,2,2,62,15
+JP-005,Tokyo,Shibuya Tower,35.6580,139.7016,1800,0.18,0.10,false,false,55,MEDIUM,2,0,2,78,20
+TR-001,Istanbul,Hospital,40.9900,29.0250,200,0.28,0.20,false,false,54,MEDIUM,2,0,2,80,12
+TR-002,Istanbul,Old Apartment,40.9850,29.0300,40,0.46,0.80,true,true,93,CRITICAL,4,2,1,58,25
+TR-003,Istanbul,School,40.9950,29.0200,500,0.22,0.40,false,false,57,MEDIUM,2,0,2,88,14
+TR-004,Istanbul,Factory,40.9800,29.0400,150,0.35,0.50,true,true,88,CRITICAL,4,2,1,65,30
+TR-005,Istanbul,New Residence,40.9920,29.0350,80,0.12,0.10,false,false,30,LOW,1,0,0,92,8

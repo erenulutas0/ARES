@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # MQTT Broker - Communication between Edge and Server
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: ares-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    restart: always
+
+  # PostgreSQL - Persistent storage for buildings, sensors history, and events
+  postgres:
+    image: postgres:15-alpine
+    container_name: ares-postgres
+    environment:
+      POSTGRES_USER: ares_user
+      POSTGRES_PASSWORD: ares_password
+      POSTGRES_DB: ares_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  # Redis - Real-time state cache and WebSocket message broker
+  redis:
+    image: redis:7-alpine
+    container_name: ares-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  postgres_data:

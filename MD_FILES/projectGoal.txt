@@ -1,0 +1,16 @@
+A-RES Nedir? (En Basit Haliyle)
+Olayımız şu: Büyük bir deprem olduğunda en büyük sorun kaos. Hangi bina yıkıldı, hangisinde yangın çıktı, hangisinin içinde daha çok insan var kimse tam bilemiyor. Yardımlar (ambulans, itfaiye, AFAD) bazen yanlış yerlere gidiyor veya çok geç kalıyor.
+Bizim projemiz olan A-RES, binaları "konuşan binalar" haline getiriyor.
+📦 Ne Yapıyoruz?
+Her binanın içine, avuç içi kadar küçük ama çok zeki bir "Sensör Kutusu" yerleştiriyoruz. Bu kutu binanın sinir sistemi gibi çalışıyor ve deprem anında şu 3 sorunun cevabını saniyeler içinde veriyor:
+1.	Hasar durumu: Bu bina ne kadar sarsıldı, kolonları zarar gördü mü?
+2.	İçerideki insan sayısı: Şu an binada kaç kişi var? (Kaç kişiyi kurtarmamız lazım?)
+3.	Ekstra Tehlike: Binada yangın başladı mı veya gaz kaçağı var mı?
+🤖 Sistem Nasıl Karar Veriyor?
+Deprem olur olmaz, bu küçük kutular topladıkları bilgileri internet üzerinden merkeze gönderiyor. Bizim yazdığımız akıllı sistem (yapay zeka) gelen verilere bakıp bir "Aciliyet Puanı" çıkarıyor.
+Mesela:
+* A binası: Hasar az, içeride kimse yok -> Puan: 10 (Bekleyebilir)
+* B binası: Hasar çok, içeride 50 kişi var ve yangın başlamış -> Puan: 95 (Hemen tüm ekipleri buraya yolla!)
+🎯 Amacımız Ne?
+Ekiplerin "Nereye gitsek?" diye düşünerek vakit kaybetmesini engellemek. Sistemin kendi kendine karar verip, yardımı en acil ihtiyacı olan binaya otomatik olarak yönlendirmesini sağlamak.
+Özetle: İnsan hatasını aradan çıkarıyoruz, saniyelerle yarışıp daha çok hayat kurtarıyoruz.

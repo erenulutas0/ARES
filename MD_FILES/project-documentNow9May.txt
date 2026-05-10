@@ -1,0 +1,694 @@
+T.C. ISTANBUL BEYKENT UNIVERSITY
+FACULTY OF ENGINEERING AND ARCHITECTURE
+DEPARTMENT OF INDUSTRIAL AND MECHANICAL ENGINEERING
+APPLIED PROJECT MANAGEMENT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROJECT CHARTER
+PROJECT TITLE:
+Self-Adaptive Smart Building Network for Earthquake Resilience
+DESCRIPTION:
+Design and develop an autonomous interconnected smart building network (A-RES) that uses Integrated Sensor Hubs, IoT communication, AI-based optimization, and adaptive damping to autonomously protect buildings and occupants during and after earthquake events.
+
+BUSINESS NEED:
+Reduce earthquake-related building damage and casualties through real-time detection and response
+Modernize structural and emergency systems using smart IoT + AI technology
+Comply with national and international earthquake safety standards
+Enhance building resilience for post-earthquake usability
+Improve emergency coordination between buildings in seismic zones
+
+CORE TEAM MEMBERS:
+
+Name
+Role
+M. Akif Guloglu 
+Project Manager (Industrial Engineering)
+Sepideh Aghajani
+IoT & AI Systems Responsible (Computer Engineering)
+M. Abdallah Salim 
+Structural Design Responsible (Civil Engineering)
+Eya Hajkacem
+Adaptive Damping Responsible (Industrial Engineering)
+Alen Asik
+Interior Layout Responsible (Interior Architecture)
+Sudem Ustahuseyinoglu
+Sensor Unit Design Responsible (Industrial Design)
+
+
+
+KEY STAKEHOLDERS: 
+
+External Stakeholders                                          Internal Stakeholders 
+Name / Group
+Role
+
+
+Name / Group
+
+
+Istanbul Beykent University
+Sponsor
+
+
+Project Manager
+M. Akif Guloglu
+Asst. Prof. Dr. Gulbahar Demir
+Faculty Advisor
+
+
+Computer Engineering Team
+IoT & AI Systems
+Local Municipality
+Regulator
+
+
+Civil Engineering Team
+Structural Design
+Construction & Real Estate Firms
+Industry Partner
+
+
+Mechanical Engineering Team
+Adaptive Damping
+RobotLand (Component Supplier)
+Supplier
+
+
+Interior Architecture Team
+Interior Layout
+Building Occupants / Public
+End Users
+
+
+Industrial Design Team
+Sensor Unit Design
+Emergency Response Authorities
+External Authority
+
+
+
+
+
+
+
+
+
+OBJECTIVES: write japan here 
+Create an operational A-RES (Autonomous Earthquake Response System) simulation/prototype by implementing Integrated Sensor Hubs on key building nodes by using risk-based sampling, allowing for on-the-fly detection of structural damage, occupant tracking, and fire/gas risk evaluation on multiple buildings. It dynamically allocates emergency resources among buildings using a priority-weighted optimization strategy while active damping controls structural effects-all with the target of reducing occupant risk by at least 40%.
+
+SWOT ANALYSIS:
+Strength 
+Weakness
+Multidisciplinary team with diverse expertise (Industrial, Computer, Civil, Mechanical Engineering, Interior Architecture, Industrial Design).
+Integration of IoT, AI, and adaptive damping technologies for innovative solutions.
+Real-time communication and coordination between multiple buildings enhances earthquake resilience.
+Focus on both structural safety and occupant experience (flexible interior, user-friendly sensors).
+Strong academic support and access to university resources and software.
+Clear objectives and well-defined project scope.
+Limited budget (105,000 ₺) may restrict the quality or quantity of components and materials.
+Tight project timeline with multiple complex deliverables.
+Dependence on hardware availability and timely procurement.
+Coordination across 6 different departments may lead to communication delays.
+Team members may have academic workload constraints affecting availability.
+Prototype is simulation-based; real-world testing limitations.
+OPPORTUNITIES
+THREATS
+Growing global demand for smart and earthquake-resilient building solutions.
+Potential for future collaborations with industry, municipalities, and research institutions.
+Opportunity to publish research and participate in competitions or innovation challenges.
+Scalability of the system for smart city and infrastructure projects.
+Advancement in IoT and AI technologies can enhance project value and impact.
+Possibility of securing grants or external funding for future development.
+Uncertainty in hardware delivery or price fluctuations.
+Changes in university schedule or academic calendar may impact timelines.
+Technical challenges or system integration issues may cause delays.
+Competition from other projects or existing solutions.
+Natural or unforeseen events affecting project progress.
+Data security and privacy risks related to IoT communication.
+
+
+
+GOALS:
+Design an IoT-based real-time building communication network
+Integrate AI coordination for emergency response optimization
+Develop adaptive damping and structural resilience mechanisms
+Create flexible interior layouts for post-earthquake usability
+Design smart sensor units for user emergency interaction
+
+
+SUMMARY PROJECT STATUS:
+
+Item
+Status
+Project Start Date
+22.04.2026
+Project Completion Date
+15.06.2026
+Current Phase
+Initiation
+Budget Approved
+Pending (est. 100,500 ₺)
+Risk Level
+Medium
+Last Update
+25.04.2026
+
+
+SCOPE:
+Design and prototype a multi-building autonomous emergency response system (A-RES) utilizing integrated sensor hubs (combining structural damage detection, occupancy detection, and fire/gas risk assessment) located at the nodes of the building infrastructure by employing a risk-based sampling technique. This design includes an IoT network framework enabling instant inter-building data transfer, an active damper system to safeguard building structures, a modular interior space design optimized to ensure adequate sensor coverage, and physical casing of the sensor hubs, and a priority-weighted optimization system to autonomously assess which buildings are in most need of emergency response resources-this has been verified via a seismic event simulation.
+
+MILESTONES:
+
+Task
+Status
+Due Date
+Done
+Project Charter & SWOT
+In Progress
+26.04.2026
+No
+Literature Review
+Planned
+8.05.2026
+No
+System Design (All Depts.)
+Planned
+13.05.2026
+No
+Prototype / Simulation
+Planned
+18.05.2026
+No
+Integration & Testing
+Planned
+07.06.2026
+No
+Final Report & Presentation
+Planned
+15.06.2026
+No
+
+
+BUDGET: 
+
+Item
+Estimated Cost
+Sensor hardware & components
+50,000 ₺
+Software tools & licenses
+20,000 ₺
+Prototyping & materials
+30,000 ₺
+Documentation & printing
+5000 ₺
+Total
+105,000 ₺
+
+
+CONSTRAINTS:
+Budget limitations
+Time constraint (end of semester deadline)
+Hardware procurement availability
+Coordination across 6 different departments
+ASSUMPTIONS:
+Team members will be available throughout the project
+Required software tools will be accessible via the university
+No major disruptions to the academic calendar
+DELIVERABLES:
+A-RES simulation/prototype demonstrating autonomous earthquake response
+Integrated Sensor Hub design (structural + occupancy + fire/gas)
+Priority-weighted optimization algorithm for emergency resource allocation
+IoT network architecture for real-time inter-building communication
+Adaptive damping system design document
+Interior layout plan optimized for sensor coverage
+Final project report and presentation
+
+
+APPROVALS:
+
+Role
+Signature
+Date
+Project Sponsor
+
+
+
+
+Project Manager
+
+
+
+
+Faculty Advisor 
+
+
+
+
+
+
+(sepideh is changing this)
+
+
+
+
+Business Proposal for Integrated Sensor Hub Supply and Development
+Client: Istanbul Beykent University – Faculty of Engineering and Architecture
+Project: A-RES: Autonomous Earthquake Response System (Self-Adaptive Smart Building Network for Earthquake Resilience)
+Date: 30.04.2026
+
+Scope of Work
+We propose to design, develop, and deliver the Integrated Sensor Hub system for the A-RES project; a multi-building autonomous earthquake response network. Each Integrated Sensor Hub is a self-contained unit combining three core detection modules:
+
+Structural Damage Detection: Accelerometers measuring building vibration and displacement in real time
+Occupancy Tracking: Thermal and motion sensors detecting the number of occupants per zone
+Fire/Gas Risk Monitoring: Smoke and heat sensors identifying secondary disaster risks immediately after seismic events
+
+Sensor Hubs will be placed exclusively at critical structural nodes, determined by the Civil Engineering team using risk-based sampling methodology, eliminating the need for full-room coverage and reducing overall hardware costs.
+
+
+Details of Supply and Services
+Full design and fabrication of Integrated Sensor Hub units
+IoT network integration for real-time data transmission between buildings
+Development of the priority-weighted optimization algorithm for autonomous emergency resource allocation
+Physical casing design (impact-resistant, aesthetically considered) by the Industrial Design team
+Adaptive damping system design and integration by the Mechanical Engineering team
+Interior layout planning to eliminate sensor blind spots by the Interior Architecture team
+System commissioning and simulation testing against seismic event scenarios
+Full technical documentation and project report
+Team training and handover
+
+
+Item
+Estimated Cost
+Integrated Sensor Hub units (hardware & assembly)
+50,000 ₺
+Software tools, IoT platform & licenses
+20,000 ₺
+Prototyping & materials (damping, casing, layout models)
+30,000 ₺
+Documentation & printing
+5000 ₺
+Total
+105,000 ₺
+
+
+Terms and Conditions
+Payment Terms: Resources allocated at project initiation; expenditure tracked monthly
+Development & Delivery Timeline: 12 weeks from project start (22.04.2026 – 20.07.2026)
+Validity of Proposal: Valid for the duration of the 2025–2026 academic semester
+Excludes: External building infrastructure modifications, civil construction works, and utility connections beyond the sensor mounting points
+
+Expected Outcomes
+Implementation of the A-RES Integrated Sensor Hub system is projected to:
+Reduce occupant risk during earthquake events by at least 40%
+Enable autonomous, real-time emergency resource prioritization across multiple buildings
+Detect structural damage, occupancy status, and fire/gas risks within milliseconds of a seismic event
+Provide a scalable, cost-effective model applicable to real-world urban seismic resilience projects
+
+We are confident that the A-RES Integrated Sensor Hub system represents a technically sound, cost-effective, and life-saving solution for earthquake resilience. The multidisciplinary team of 17 members across 6 departments ensures comprehensive coverage of all engineering, design, and software requirements.
+
+Please do not hesitate to contact us for further information or clarification.
+
+Sincerely,
+
+M. Akif Guloglu
+Project & Operational Manager 
+A-RES Project Team
+0808080808@stdudent.beykent.edu.tr
+
+
+Risk No
+Risk Description 
+Likelihood
+(1-5)
+Impact
+(1-5)
+Risk Score
+Mitigation Strategy
+Responsible Person
+R1
+Delay in procurement of Integrated Sensor Hub components
+3
+5
+15
+Order components early; identify alternative suppliers
+Eya Hajkacem
+R2
+IoT network failure during data transmission between buildings
+3
+5
+15
+Use redundant communication protocols; offline fallback mode
+Eren Ulutas
+R3
+Sensor placement errors at critical nodes causing blind spots
+2
+4
+15
+Civil Engineering team validates placement before installation
+M. Abdallah Salim
+R4
+Adaptive damping system underperforming during high-magnitude events
+2
+5
+10
+Conduct simulation tests; use safety margins in design specs
+Bedirhan Eren (?)
+R5
+Budget overrun due to hardware costs
+3
+4
+12
+Define strict budget control; allocate 10% contingency reserve
+Sude Uysal
+R6
+Team coordination failure across 6 departments (17 people)
+4
+3
+12
+Weekly sync meetings; assign clear sub-leads per department
+M. Akif Guloglu
+R7
+Sensor Hub physical casing failing under structural stress
+2
+4
+8
+Industrial Design team conducts stress testing on prototype
+Sudem Ustahuseyinoglu
+R8
+Optimization algorithm producing incorrect priority ranking
+2
+5
+10
+Run algorithm against simulated earthquake datasets before deployment
+Melike Kayacan
+R9
+Interior layout conflicts blocking sensor visibility
+2
+3
+6
+Interior Architecture reviews layout against sensor coverage map
+Mohamed Youb
+R10
+Fire/gas sensor false alarms causing unnecessary evacuations
+3
+3
+9
+Calibrate thresholds carefully; add 2-stage confirmation logic
+Marjan Osmani
+
+
+Note for scoring guide: Likelihood × Impact = Risk Score → (1–4) Low / (5–9) Medium / (10–14) High / (15–25) Critical 
+
+Risk Score
+(1-5)
+5-10
+10-15
+15-20
+20-25
+
+
+
+
+1.6. SUPPLIER SELECTION
+1.6.1 Business Proposal for Electronic Component Supply
+Client: A-RES Project Team – Istanbul Beykent University
+Project: Autonomous Earthquake Response System (Self-Adaptive Smart Building Network)
+Date: 02.05.2026
+
+Scope of Work:
+We propose to supply all electronic components required for the assembly of the Integrated Sensor Hub units used in the A-RES project. The components will support structural damage detection, occupancy tracking, and fire/gas risk monitoring across the multi-building earthquake response network.
+
+Details of Supply and Services:
+
+ADXL345 or MPU6050 accelerometer module (structural vibration and shaking detection)
+LD2410 mmWave radar sensor (occupancy and human presence detection)
+AMG8833 thermal array sensor (occupancy density via heat mapping)
+MQ-2 gas sensor (smoke and flammable gas detection)
+MQ-7 CO sensor (carbon monoxide detection)
+DS18B20 temperature sensor (temperature increase monitoring)
+BME280 environmental sensor (temperature, humidity, and pressure)
+ESP32 microcontroller with Wi-Fi and Bluetooth (IoT data transmission)
+ABS impact-resistant enclosure casing and structural mounting hardware
+PCB boards, jumper cables, and power supply units
+Delivery to university address with full itemized invoice
+Cost: 
+Item
+Quantity
+Approximate Cost
+ADXL345 or MPU6050 Accelerometer
+1
+73–142 ₺
+LD2410 mmWave Sensor
+1
+~355 ₺
+AMG8833 Thermal Array Sensor
+1
+~1,660 ₺
+MQ-2 Gas Sensor
+1
+68–77 ₺
+MQ-7 CO Sensor
+1
+89–109 ₺
+DS18B20 Temperature Sensor
+1
+61–67 ₺
+BME280 Environment Sensor
+1
+~230 ₺
+ESP32 Microcontroller + IoT Module
+1
+~250 ₺
+Enclosure Casing & Mounting Hardware
+1 set
+~400 ₺
+Cables, PCBs & Power Supply
+1 set
+~350 ₺
+Shipping & Handling
+—
+~150 ₺
+Total
+
+
+~3,600–4,750 ₺
+
+
+Terms and Conditions:
+Payment Terms: Full payment upon order confirmation
+Delivery Timeline: 5–7 business days from order confirmation
+Validity of Offer: This proposal is valid for 30 days from the date of issue
+Excludes: Software development, sensor programming, algorithm development, and installation labor
+
+We are pleased to support the A-RES project with reliable, widely available, and cost-effective electronic components that meet the full technical requirements of the Integrated Sensor Hub prototype.
+
+Sincerely,
+
+M. Akif Guloglu
+Project Manager
+RobotLand Electronic components 
+aryademir@robotland.com
+
+
+
+WEEK 2 Meetings Log 
+This week we had 2 meetings as a team. On Tuesday we met in person, changed our project manager and talked about what we are going to do next in the project. On Wednesday we had a Zoom call where everyone came with their own research. We went through everything together and used it to complete the Risk Assessment Matrix. We also finished the Business Proposal for our Integrated Sensor Hub system and the Supplier Selection proposal with real component prices from our research. By the end of the week we had completed all 3 deliverables that were assigned to us, the Risk Assessment Matrix, Section 1.3 Business Proposal, and Section 1.6 Supplier Selection.
+
+
+3. ECONOMIC ANALYSIS
+Turkey's 2023 earthquakes caused $34.2 billion in direct physical damage according to the World Bank, with total costs reaching $150 billion when indirect losses are included. Residential buildings alone accounted for 53% of all damage, over $18 billion. Istanbul, sitting on the North Anatolian Fault, faces a similar or greater risk given its density and population.
+Research shows that every $1 invested in disaster resilience systems generates up to $35 in public value when disasters occur. IoT-based earthquake early warning systems have been proven to significantly reduce response time, minimize casualties, and lower post-disaster recovery costs. Japan's national earthquake warning system, the world's most advanced, cost $1 billion, while IoT-based alternatives like A-RES demonstrate that the same life-saving capability can be achieved at a fraction of the cost through smart sensor networks.
+The A-RES system directly addresses the 3 largest cost categories of earthquake damage:
+Economic Damage Category
+A-RES Response
+Structural building collapse
+Adaptive damping + structural monitoring
+Casualties from delayed evacuation
+Real-time occupancy tracking + instant alerts
+Secondary disasters (fire, gas leaks)
+MQ-2, MQ-7 fire/gas sensors in every hub
+Resource misallocation in emergency response
+Priority-weighted optimization algorithm
+
+For Istanbul specifically, a scalable system like A-RES deployed across connected buildings represents a high-value, low-cost public safety investment relative to the billions in potential damage it aims to prevent.
+
+4. FINANCIAL ANALYSIS
+The total project budget is ₺10,500, allocated across hardware, software, and documentation:
+4.1 Budget Breakdown
+
+Item
+Estimated Cost
+Sensor hardware & components (per hub)
+₺5,000
+Software tools & licenses
+₺2,000
+Prototyping & materials
+₺3,000
+Documentation & printing
+₺500
+Total
+₺10,500
+
+
+4.2 Component-Level Cost Breakdown (1 Sensor Hub)
+
+Component
+Purpose
+Cost
+ADXL345 / MPU6050
+Structural vibration detection
+73–142 ₺
+LD2410 mmWave Sensor
+Occupancy / human presence
+~355 ₺
+AMG8833 Thermal Array
+Occupancy density mapping
+~1,660 ₺
+MQ-2 Gas Sensor
+Smoke & flammable gas
+68–77 ₺
+MQ-7 CO Sensor
+Carbon monoxide detection
+89–109 ₺
+DS18B20 Temperature Sensor
+Heat monitoring
+61–67 ₺
+BME280 Environment Sensor
+Temp, humidity, pressure
+~230 ₺
+ESP32 Microcontroller
+IoT data transmission
+~250 ₺
+Enclosure & mounting hardware
+Physical hub casing
+~400 ₺
+Cables, PCBs & power supply
+Assembly components
+~350 ₺
+Total per hub
+
+
+~3,536–3,640 ₺
+
+
+4.3 Cost Comparison
+Traditional earthquake monitoring systems cost tens of thousands of dollars per building. The A-RES Integrated Sensor Hub prototype achieves comparable multi-function detection (structural + occupancy + fire/gas) at under ₺4,000 per unit, demonstrating strong cost efficiency for a university-level proof of concept.
+
+5. FEASIBILITY ANALYSIS
+5.1 Technical Feasibility
+All components selected for the A-RES Integrated Sensor Hub are commercially available, widely used in IoT projects, and compatible with the ESP32 microcontroller platform. The IoT-based approach has been validated in academic literature as technically feasible for earthquake early warning applications. The 6-department team covers all required engineering disciplines, ensuring full technical coverage across structural, software, mechanical, interior, and design domains.
+5.2 Financial Feasibility
+The total project budget of ₺10,500 is sufficient to build and test 1 fully functional Integrated Sensor Hub prototype. The component cost of approximately ₺3,600 per hub leaves adequate remaining budget for software development (₺2,000), additional prototyping materials (₺3,000), and documentation (₺500). No external funding is required beyond university resource provision.
+5.3 Time Feasibility
+The project timeline runs from 22 April to 15 June 2026, a total of 8 weeks. Based on the Gantt Chart, all 6 design tasks run in parallel during weeks 3–4, followed by 2 weeks of prototyping, 1 week of testing, and 1 week of final reporting. This schedule is achievable given the team size of 17 members across 6 departments.
+5.4 Feasibility Summary
+Feasibility Dimension
+Assessment
+Status
+Technical
+All components available; IoT approach validated
+✅ Feasible
+Financial
+Budget covers 1 full prototype + documentation
+✅ Feasible
+Time
+8-week timeline achievable with parallel task execution
+✅ Feasible
+Team
+17 members across 6 departments covers all disciplines
+✅ Feasible
+Risk
+10 identified risks with mitigation strategies in place
+⚠️ Medium Risk
+
+
+Collection of github projects 
+
+🏗️ Structural Health Monitoring (SHM)
+MarcoParola/structural_health_monitoring ML + IoT sensor-based SHM for civil structures using vibration data and digital twins under seismic/wind excitations.
+
+
+reicruz/iot-shm IoT-based Structural Health Monitoring system.
+
+
+GitHub Topics: structural-health-monitoring Collection of repos covering SHM with accelerometers, CNNs, piezoelectric sensors, and damage detection.
+
+
+
+🌍 Earthquake Early Warning (EEW)
+openeew/openeew Open-source EEW toolkit by Grillo / Linux Foundation — IoT sensor network that detects and alerts communities before shaking arrives.
+
+
+sapienzaapps/galileo-terremoti SeismoCloud — low-cost EEW network built on Raspberry Pi / Arduino seismometers.
+
+
+serdaraltin/earthquake-warning-system Arduino + ESP8266 system using MPU6050 accelerometer for earthquake detection with audio/visual alerts.
+
+
+yajunpeng/Earthquake-Early-Warning ML/CNN-based EEW magnitude prediction using seismic waveforms from Southern California.
+
+
+
+📡 Resilient / Self-Adaptive Networks
+mitre-rise/coupled-networks Resilient infrastructure simulation for coupled power + communications networks under cascading failures — close to your "network resilience" angle.
+
+
+mr-tbot/mesh-api AI-powered off-grid LoRa mesh network with self-sufficient routing, GPS emergency alerts, and Home Assistant integration.
+
+
+meshcore-dev/MeshCore Lightweight self-healing mesh protocol for embedded LoRa radios — decentralized, no internet required.
+
+
+ai4city-hkust/SmartTransfer Vision foundation model for rapid post-earthquake building damage mapping from satellite imagery.
+
+
+
+🏙️ Smart Building / Mesh Networking (Related)
+GitHub Topics: mesh-network (smart-building tag) Includes BlueRange Mesh — BLE-based building automation mesh network.
+
+
+moarpepes/awesome-mesh Curated list including disaster-resilient mesh projects like LifeNet and Commotion Wireless.
+
+
+
+These cover the main pillars of your project: adaptive networks, seismic detection, structural monitoring, and resilient communication. Want me to dig deeper into any specific angle?
+

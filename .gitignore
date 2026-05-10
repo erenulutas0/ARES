@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+
+# Environment / secrets
+.env
+.env.*
+
+# Data and local generated artifacts
+*.log
+test_results.json
+*.pt
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Flutter / mobile generated outputs
+ares_mobile/.dart_tool/
+ares_mobile/build/
+ares_mobile/.idea/
+ares_mobile/*.iml
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Mosquitto runtime files
+mosquitto/data/
+mosquitto/log/

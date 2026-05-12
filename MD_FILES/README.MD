@@ -31,6 +31,7 @@ A-RES is a university Applied Project Management project that turns buildings in
 | [EDGE_HUB_VISUAL_PROMPT.md](EDGE_HUB_VISUAL_PROMPT.md) | Visual prompt for edge-hub based A-RES architecture |
 | [STATIC_VULNERABILITY_SYSTEM_REPORT_TR.md](STATIC_VULNERABILITY_SYSTEM_REPORT_TR.md) | Updated Turkish report replacing structural sensors with static building vulnerability data |
 | [UPDATED_SYSTEM_VISUAL_PROMPT.md](UPDATED_SYSTEM_VISUAL_PROMPT.md) | Visual prompt for the updated occupancy + fire-gas + vulnerability architecture |
+| [CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md](CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md) | CODEX decision report on protocols, data governance, urgency scoring, KVKK/security, and network resilience |
 | [agents.md](agents.md) | AI assistant context & coding guidelines |
 
 ## Quick Start (Development)

@@ -38,3 +38,6 @@
 - **Added:** `MD_FILES/STATIC_VULNERABILITY_SYSTEM_REPORT_TR.md` and PDF version describing the updated MVP architecture with occupancy sensing, fire-gas sensing, and static building vulnerability data.
 - **Added:** `MD_FILES/STATIC_VULNERABILITY_SYSTEM_ILLUSTRATION.png` for the revised system.
 - **Added:** `MD_FILES/UPDATED_SYSTEM_VISUAL_PROMPT.md` for creating a new illustration in Gemini or other image tools.
+
+## [2026-05-12] - CODEX System Architecture, Data Governance, and Security Report
+- **Added:** `MD_FILES/CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md` and PDF version covering protocol choices, data collection/storage policies, urgency score design, authority integration, KVKK/legal considerations, cybersecurity, and resilient network design.

@@ -29,6 +29,7 @@
 - [x] Connect local alarm decisions to dashboard status cards
 - [x] Serve web dashboard from FastAPI at `/dashboard`
 - [x] Add static building vulnerability module and updated urgency score formula
+- [x] Expose building vulnerability profile and factors on dashboard cards, overlay, and CSV export
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis

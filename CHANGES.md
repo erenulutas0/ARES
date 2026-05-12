@@ -49,3 +49,8 @@
 - **Changed:** Updated urgency scoring to use occupancy, fire-gas risk, static vulnerability, and confidence/freshness instead of real-time structural sensing.
 - **Changed:** Updated simulator payloads to send building age, structural type, floors, adjacency, soil risk, and seismic hazard.
 - **Added:** `tests/test_building_vulnerability.py` for vulnerability scoring validation.
+
+## [2026-05-13] - Dashboard Vulnerability Visibility
+- **Changed:** Updated dashboard cards, detail overlay, and CSV export to show the static building vulnerability index and its input factors.
+- **Changed:** Replaced the main dashboard emphasis from maximum shaking to highest building vulnerability for better alignment with the current MVP scope.
+- **Changed:** Updated dashboard explanation text to describe the current occupancy + fire-gas + vulnerability triage logic.

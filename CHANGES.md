@@ -41,3 +41,11 @@
 
 ## [2026-05-12] - CODEX System Architecture, Data Governance, and Security Report
 - **Added:** `MD_FILES/CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md` and PDF version covering protocol choices, data collection/storage policies, urgency score design, authority integration, KVKK/legal considerations, cybersecurity, and resilient network design.
+
+## [2026-05-13] - Final Design Synthesis and Vulnerability Module Implementation
+- **Added:** `MD_FILES/ARES_SYSTEM_RESEARCH_REPORT.md` and PDF from the Claude/Gemini comparison report.
+- **Added:** `MD_FILES/CODEX_CLAUDE_SYNTHESIS_FINAL_DESIGN_TR.md` and PDF as the final combined design decision report.
+- **Added:** `src/server/building_vulnerability.py` for static building vulnerability index calculation.
+- **Changed:** Updated urgency scoring to use occupancy, fire-gas risk, static vulnerability, and confidence/freshness instead of real-time structural sensing.
+- **Changed:** Updated simulator payloads to send building age, structural type, floors, adjacency, soil risk, and seismic hazard.
+- **Added:** `tests/test_building_vulnerability.py` for vulnerability scoring validation.

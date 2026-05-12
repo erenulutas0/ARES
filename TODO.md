@@ -28,6 +28,7 @@
 - [x] Basic Dashboard (WebSocket + Redis Integration)
 - [x] Connect local alarm decisions to dashboard status cards
 - [x] Serve web dashboard from FastAPI at `/dashboard`
+- [x] Add static building vulnerability module and updated urgency score formula
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis
@@ -39,6 +40,7 @@
 - [ ] Phone-camera doorway video test and manual-vs-detected count comparison
 - [ ] Add final architecture figures to the shared Google Docs report
 - [ ] Prepare 1-page CE summary for presentation slides
+- [ ] Update Google Docs report with final CODEX + Claude/Gemini synthesis
 
 ## 🟡 Week 5: Integration & Final Testing
 - [ ] Full System Integration Test

@@ -11,18 +11,18 @@ PORT = 1883
 # Define the "City" (10 diverse buildings: 5 in Istanbul, 5 in Tokyo)
 BUILDINGS = [
     # --- Turkey Region ---
-    {"id": "TR-001", "type": "Hospital", "lat": 40.990, "lon": 29.025, "base_occ": 200, "vuln": 0.2, "fire_risk": 0.01, "gas_risk": 0.05},
-    {"id": "TR-002", "type": "Old Apartment", "lat": 40.985, "lon": 29.030, "base_occ": 40, "vuln": 0.8, "fire_risk": 0.1, "gas_risk": 0.15},
-    {"id": "TR-003", "type": "School", "lat": 40.995, "lon": 29.020, "base_occ": 500, "vuln": 0.4, "fire_risk": 0.05, "gas_risk": 0.02},
-    {"id": "TR-004", "type": "Factory", "lat": 40.980, "lon": 29.040, "base_occ": 150, "vuln": 0.5, "fire_risk": 0.3, "gas_risk": 0.4},
-    {"id": "TR-005", "type": "New Residence", "lat": 40.992, "lon": 29.035, "base_occ": 80, "vuln": 0.1, "fire_risk": 0.02, "gas_risk": 0.01},
+    {"id": "TR-001", "type": "Hospital", "lat": 40.990, "lon": 29.025, "base_occ": 200, "vuln": 0.2, "fire_risk": 0.01, "gas_risk": 0.05, "building_age": 8, "structural_type": "reinforced_concrete", "floors": 6, "adjacency_type": "detached", "soil_risk": "medium", "seismic_hazard": "high"},
+    {"id": "TR-002", "type": "Old Apartment", "lat": 40.985, "lon": 29.030, "base_occ": 40, "vuln": 0.8, "fire_risk": 0.1, "gas_risk": 0.15, "building_age": 45, "structural_type": "masonry", "floors": 7, "adjacency_type": "adjacent", "soil_risk": "high", "seismic_hazard": "high"},
+    {"id": "TR-003", "type": "School", "lat": 40.995, "lon": 29.020, "base_occ": 500, "vuln": 0.4, "fire_risk": 0.05, "gas_risk": 0.02, "building_age": 22, "structural_type": "reinforced_concrete", "floors": 4, "adjacency_type": "block", "soil_risk": "medium", "seismic_hazard": "high"},
+    {"id": "TR-004", "type": "Factory", "lat": 40.980, "lon": 29.040, "base_occ": 150, "vuln": 0.5, "fire_risk": 0.3, "gas_risk": 0.4, "building_age": 30, "structural_type": "steel", "floors": 2, "adjacency_type": "detached", "soil_risk": "high", "seismic_hazard": "high"},
+    {"id": "TR-005", "type": "New Residence", "lat": 40.992, "lon": 29.035, "base_occ": 80, "vuln": 0.1, "fire_risk": 0.02, "gas_risk": 0.01, "building_age": 3, "structural_type": "reinforced_concrete", "floors": 12, "adjacency_type": "block", "soil_risk": "medium", "seismic_hazard": "high"},
     
     # --- Japan Region ---
-    {"id": "JP-001", "type": "Metropolitan Hospital", "lat": 35.6895, "lon": 139.6917, "base_occ": 1200, "vuln": 0.15, "fire_risk": 0.01, "gas_risk": 0.05},
-    {"id": "JP-002", "type": "Shinjuku Residence", "lat": 35.6850, "lon": 139.6850, "base_occ": 240, "vuln": 0.4, "fire_risk": 0.08, "gas_risk": 0.1},
-    {"id": "JP-003", "type": "Tech Academy", "lat": 35.6950, "lon": 139.7000, "base_occ": 850, "vuln": 0.3, "fire_risk": 0.04, "gas_risk": 0.02},
-    {"id": "JP-004", "type": "Industrial Plant", "lat": 35.6750, "lon": 139.6700, "base_occ": 450, "vuln": 0.5, "fire_risk": 0.25, "gas_risk": 0.35},
-    {"id": "JP-005", "type": "Shibuya Tower", "lat": 35.6580, "lon": 139.7016, "base_occ": 1800, "vuln": 0.1, "fire_risk": 0.02, "gas_risk": 0.01}
+    {"id": "JP-001", "type": "Metropolitan Hospital", "lat": 35.6895, "lon": 139.6917, "base_occ": 1200, "vuln": 0.15, "fire_risk": 0.01, "gas_risk": 0.05, "building_age": 6, "structural_type": "steel", "floors": 14, "adjacency_type": "detached", "soil_risk": "medium", "seismic_hazard": "high"},
+    {"id": "JP-002", "type": "Shinjuku Residence", "lat": 35.6850, "lon": 139.6850, "base_occ": 240, "vuln": 0.4, "fire_risk": 0.08, "gas_risk": 0.1, "building_age": 28, "structural_type": "reinforced_concrete", "floors": 10, "adjacency_type": "adjacent", "soil_risk": "medium", "seismic_hazard": "high"},
+    {"id": "JP-003", "type": "Tech Academy", "lat": 35.6950, "lon": 139.7000, "base_occ": 850, "vuln": 0.3, "fire_risk": 0.04, "gas_risk": 0.02, "building_age": 12, "structural_type": "reinforced_concrete", "floors": 8, "adjacency_type": "block", "soil_risk": "low", "seismic_hazard": "high"},
+    {"id": "JP-004", "type": "Industrial Plant", "lat": 35.6750, "lon": 139.6700, "base_occ": 450, "vuln": 0.5, "fire_risk": 0.25, "gas_risk": 0.35, "building_age": 35, "structural_type": "steel", "floors": 3, "adjacency_type": "detached", "soil_risk": "high", "seismic_hazard": "high"},
+    {"id": "JP-005", "type": "Shibuya Tower", "lat": 35.6580, "lon": 139.7016, "base_occ": 1800, "vuln": 0.1, "fire_risk": 0.02, "gas_risk": 0.01, "building_age": 4, "structural_type": "steel", "floors": 30, "adjacency_type": "block", "soil_risk": "medium", "seismic_hazard": "high"}
 ]
 
 client = mqtt.Client()
@@ -66,8 +66,13 @@ def simulate_earthquake():
             "status": "online",
             "lat": b["lat"],
             "lon": b["lon"],
-            "vulnerability": b["vuln"],
-            "type": b["type"]
+            "type": b["type"],
+            "building_age": b["building_age"],
+            "structural_type": b["structural_type"],
+            "floors": b["floors"],
+            "adjacency_type": b["adjacency_type"],
+            "soil_risk": b["soil_risk"],
+            "seismic_hazard": b["seismic_hazard"]
         }
         client.publish(f"ares/building/{bid}/sensor", json.dumps(sensor_data), qos=1)
         states[bid]["seq_sensor"] += 1
@@ -103,8 +108,13 @@ def simulate_routine():
                     "status": "online",
                     "lat": b["lat"],
                     "lon": b["lon"],
-                    "vulnerability": b["vuln"],
-                    "type": b["type"]
+                    "type": b["type"],
+                    "building_age": b["building_age"],
+                    "structural_type": b["structural_type"],
+                    "floors": b["floors"],
+                    "adjacency_type": b["adjacency_type"],
+                    "soil_risk": b["soil_risk"],
+                    "seismic_hazard": b["seismic_hazard"]
                 }
                 client.publish(f"ares/building/{bid}/sensor", json.dumps(sensor_data), qos=1)
 

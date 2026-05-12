@@ -32,6 +32,8 @@ A-RES is a university Applied Project Management project that turns buildings in
 | [STATIC_VULNERABILITY_SYSTEM_REPORT_TR.md](STATIC_VULNERABILITY_SYSTEM_REPORT_TR.md) | Updated Turkish report replacing structural sensors with static building vulnerability data |
 | [UPDATED_SYSTEM_VISUAL_PROMPT.md](UPDATED_SYSTEM_VISUAL_PROMPT.md) | Visual prompt for the updated occupancy + fire-gas + vulnerability architecture |
 | [CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md](CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md) | CODEX decision report on protocols, data governance, urgency scoring, KVKK/security, and network resilience |
+| [ARES_SYSTEM_RESEARCH_REPORT.md](ARES_SYSTEM_RESEARCH_REPORT.md) | Claude/Gemini comparison research report for the updated A-RES system |
+| [CODEX_CLAUDE_SYNTHESIS_FINAL_DESIGN_TR.md](CODEX_CLAUDE_SYNTHESIS_FINAL_DESIGN_TR.md) | Final synthesis of CODEX and Claude/Gemini reports |
 | [agents.md](agents.md) | AI assistant context & coding guidelines |
 
 ## Quick Start (Development)

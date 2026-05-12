@@ -1,7 +1,7 @@
 def calculate_urgency_score(
-    pga,              # Peak Ground Acceleration (g)
-    building_vuln,    # 0.0-1.0 vulnerability index
-    occupancy,        # Current people count
+    pga=0.0,          # Legacy/demo field; not a primary MVP factor anymore
+    building_vuln=0.5,    # 0.0-1.0 vulnerability index
+    occupancy=0,        # Current people count
     fire_detected=False,
     smoke_detected=False,
     gas_detected=False,
@@ -9,20 +9,19 @@ def calculate_urgency_score(
     seconds_since_update=0
 ):
     """
-    Calculates the urgency score (0-100) for a building based on sensor data.
-    Based on A-RES Priority-Weighted Scoring Formula.
-    """
-    
-    # 1. Shaking Score (S_shake) - Map PGA to 0-100
-    if pga < 0.02: S_shake = 0
-    elif pga < 0.05: S_shake = 15
-    elif pga < 0.10: S_shake = 30
-    elif pga < 0.20: S_shake = 50
-    elif pga < 0.35: S_shake = 70
-    elif pga < 0.50: S_shake = 85
-    else: S_shake = 100
+    Calculates the updated A-RES urgency score (0-100).
 
-    # 2. Occupancy Score (S_occ) - Logarithmic scaling
+    MVP inputs:
+    - occupancy risk
+    - fire/gas risk
+    - static building vulnerability
+    - data confidence/freshness
+
+    The legacy pga argument is kept for backward compatibility, but the final
+    MVP score does not depend on real-time structural health sensing.
+    """
+
+    # 1. Occupancy Score (S_occ) - Logarithmic scaling
     if occupancy == 0: S_occ = 0
     elif occupancy <= 5: S_occ = 20
     elif occupancy <= 20: S_occ = 40
@@ -30,32 +29,36 @@ def calculate_urgency_score(
     elif occupancy <= 100: S_occ = 80
     else: S_occ = 100
 
-    # 3. Hazard Score (S_fire, S_gas)
-    S_fire = 100 if fire_detected else (50 if smoke_detected else 0)
-    S_gas = 100 if gas_detected else 0
+    # 2. Fire/gas hazard score
+    hazard_score = 0
+    if smoke_detected:
+        hazard_score = max(hazard_score, 50)
+    if gas_detected:
+        hazard_score = max(hazard_score, 100)
+    if fire_detected:
+        hazard_score = 100
 
-    # 4. Building Vulnerability (S_vuln)
+    # 3. Building vulnerability (already 0-1, scale to 0-100)
     S_vuln = building_vuln * 100
 
-    # 5. Weighted Sum
-    # Weights: Shake(30%), Occupancy(25%), Fire(20%), Vuln(15%), Gas(10%)
+    # 4. Weighted sum for updated MVP:
+    # Occupancy(35%), Fire/gas(30%), Vulnerability(25%)
+    # Confidence is applied as a separate precautionary boost.
     raw_score = (
-        S_shake * 0.30 +
-        S_occ   * 0.25 +
-        S_fire  * 0.20 +
-        S_vuln  * 0.15 +
-        S_gas   * 0.10
+        S_occ * 0.35
+        + hazard_score * 0.30
+        + S_vuln * 0.25
     )
 
-    # 6. Confidence/Freshness Adjustment
+    # 5. Confidence/Freshness Adjustment
     freshness_factor = 1.0
     if seconds_since_update > 300: freshness_factor = 0.5
     elif seconds_since_update > 60: freshness_factor = 0.8
     
     overall_conf = data_confidence * freshness_factor
     
-    # Uncertainty boost: If we're not sure, assume slightly worse (+15 max)
-    boost = (1 - overall_conf) * 15
+    # Uncertainty boost: If we're not sure, assume slightly worse (+15 max).
+    boost = (1 - overall_conf) * 15 if overall_conf < 0.75 else 0
     
     final_score = min(100, int(raw_score + boost))
     
@@ -70,9 +73,8 @@ def calculate_urgency_score(
         "priority": priority,
         "confidence": round(overall_conf, 2),
         "breakdown": {
-            "shaking": S_shake,
             "occupancy": S_occ,
-            "hazards": max(S_fire, S_gas),
+            "hazards": hazard_score,
             "vulnerability": S_vuln
         }
     }

@@ -7,6 +7,7 @@ import threading
 import asyncio
 from datetime import datetime
 from .urgency_engine import calculate_urgency_score
+from .building_vulnerability import calculate_building_vulnerability
 from src.edge.local_alarm import evaluate_local_alarm
 import os
 import joblib
@@ -31,7 +32,7 @@ building_states = {}
 ml_model = None
 try:
     model_path = os.path.join(os.path.dirname(__file__), 'urgency_model.pkl')
-    if os.path.exists(model_path):
+    if os.getenv("ARES_ENABLE_LEGACY_ML", "0") == "1" and os.path.exists(model_path):
         ml_model = joblib.load(model_path)
         print("✅ ML Model loaded successfully!")
     else:
@@ -56,6 +57,9 @@ def on_message(client, userdata, msg):
             building_states[building_id] = {
                 "building_id": building_id,
                 "occupancy": 0, "pga": 0.0, "vulnerability": 0.5,
+                "building_age": None, "structural_type": "unknown", "floors": None,
+                "adjacency_type": "unknown", "soil_risk": "unknown", "seismic_hazard": "unknown",
+                "vulnerability_components": {},
                 "smoke_detected": False, "gas_detected": False, "temperature": 22.0,
                 "lat": 0.0, "lon": 0.0, "type": "Unknown",
                 "ai_score": 0,
@@ -75,7 +79,26 @@ def on_message(client, userdata, msg):
             state["lat"] = payload.get("lat", state["lat"])
             state["lon"] = payload.get("lon", state["lon"])
             state["type"] = payload.get("type", state["type"])
-            state["vulnerability"] = payload.get("vulnerability", state["vulnerability"])
+            state["building_age"] = payload.get("building_age", state["building_age"])
+            state["structural_type"] = payload.get("structural_type", state["structural_type"])
+            state["floors"] = payload.get("floors", state["floors"])
+            state["adjacency_type"] = payload.get("adjacency_type", state["adjacency_type"])
+            state["soil_risk"] = payload.get("soil_risk", state["soil_risk"])
+            state["seismic_hazard"] = payload.get("seismic_hazard", state["seismic_hazard"])
+
+            if "vulnerability" in payload:
+                state["vulnerability"] = payload["vulnerability"]
+            else:
+                vuln = calculate_building_vulnerability(
+                    building_age=state["building_age"],
+                    structural_type=state["structural_type"],
+                    floors=state["floors"],
+                    adjacency_type=state["adjacency_type"],
+                    soil_risk=state["soil_risk"],
+                    seismic_hazard=state["seismic_hazard"],
+                )
+                state["vulnerability"] = vuln["index"]
+                state["vulnerability_components"] = vuln["components"]
         elif "occupancy" in topic:
             state["occupancy"] = payload.get("current_count", state["occupancy"])
 

@@ -33,3 +33,8 @@
 - **Added:** `MD_FILES/EDGE_HUB_ARCHITECTURE_COST_REPORT_TR.md` and PDF version explaining the updated three-sensor edge-hub architecture, roadmap, and estimated costs.
 - **Added:** `MD_FILES/EDGE_HUB_ARCHITECTURE_ILLUSTRATION.png` for the updated architecture.
 - **Added:** `MD_FILES/EDGE_HUB_VISUAL_PROMPT.md` for generating a polished illustration in Gemini or another visual tool.
+
+## [2026-05-12] - Static Building Vulnerability System Update
+- **Added:** `MD_FILES/STATIC_VULNERABILITY_SYSTEM_REPORT_TR.md` and PDF version describing the updated MVP architecture with occupancy sensing, fire-gas sensing, and static building vulnerability data.
+- **Added:** `MD_FILES/STATIC_VULNERABILITY_SYSTEM_ILLUSTRATION.png` for the revised system.
+- **Added:** `MD_FILES/UPDATED_SYSTEM_VISUAL_PROMPT.md` for creating a new illustration in Gemini or other image tools.

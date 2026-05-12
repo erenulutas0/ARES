@@ -34,6 +34,7 @@ A-RES is a university Applied Project Management project that turns buildings in
 | [CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md](CODEX_SYSTEM_ARCHITECTURE_DATA_SECURITY_REPORT_TR.md) | CODEX decision report on protocols, data governance, urgency scoring, KVKK/security, and network resilience |
 | [ARES_SYSTEM_RESEARCH_REPORT.md](ARES_SYSTEM_RESEARCH_REPORT.md) | Claude/Gemini comparison research report for the updated A-RES system |
 | [CODEX_CLAUDE_SYNTHESIS_FINAL_DESIGN_TR.md](CODEX_CLAUDE_SYNTHESIS_FINAL_DESIGN_TR.md) | Final synthesis of CODEX and Claude/Gemini reports |
+| [REAL_TESTING_DEMO_PLAN_TR.md](REAL_TESTING_DEMO_PLAN_TR.md) | Three-laptop real testing plan for edge camera, central coordination, and AFAD-like authority terminal |
 | [agents.md](agents.md) | AI assistant context & coding guidelines |
 
 ## Quick Start (Development)

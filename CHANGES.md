@@ -54,3 +54,9 @@
 - **Changed:** Updated dashboard cards, detail overlay, and CSV export to show the static building vulnerability index and its input factors.
 - **Changed:** Replaced the main dashboard emphasis from maximum shaking to highest building vulnerability for better alignment with the current MVP scope.
 - **Changed:** Updated dashboard explanation text to describe the current occupancy + fire-gas + vulnerability triage logic.
+
+## [2026-05-13] - Three-Laptop Demo and Authority Feed
+- **Added:** `/authority/alerts` API endpoint for a simplified AFAD-like emergency feed.
+- **Added:** `/authority` terminal page for the third-laptop demo scenario.
+- **Changed:** Dashboard now exposes urgency score breakdown factors for occupancy, fire/gas hazards, and building vulnerability.
+- **Added:** `MD_FILES/REAL_TESTING_DEMO_PLAN_TR.md` describing the edge laptop, central coordination laptop, and authority laptop testing setup.

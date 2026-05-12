@@ -30,6 +30,7 @@
 - [x] Serve web dashboard from FastAPI at `/dashboard`
 - [x] Add static building vulnerability module and updated urgency score formula
 - [x] Expose building vulnerability profile and factors on dashboard cards, overlay, and CSV export
+- [x] Add authority terminal feed for AFAD-like third-laptop demo
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis
@@ -42,11 +43,13 @@
 - [ ] Add final architecture figures to the shared Google Docs report
 - [ ] Prepare 1-page CE summary for presentation slides
 - [ ] Update Google Docs report with final CODEX + Claude/Gemini synthesis
+- [x] Prepare three-laptop real testing and demo plan
 
 ## 🟡 Week 5: Integration & Final Testing
 - [ ] Full System Integration Test
 - [ ] Performance & Latency measurements
 - [ ] Measure MQTT-to-dashboard latency with simulator events
+- [ ] Run three-laptop demo: edge camera laptop → central laptop → authority laptop
 - [ ] Test local alarm trigger scenarios (severe shaking, smoke, gas, high temperature)
 - [ ] Final Bug Fixes
 - [ ] Demo Video Recording

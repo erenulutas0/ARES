@@ -140,6 +140,12 @@ Open the dashboard:
 http://localhost:8000/dashboard
 ```
 
+Open the authority terminal for an AFAD-like receiving laptop:
+
+```text
+http://localhost:8000/authority
+```
+
 ### 4. Run mock multi-building simulation
 
 ```bash
@@ -164,6 +170,27 @@ For the MVP, the phone is used as a practical camera source:
 6. Show updated occupancy and urgency score on the dashboard.
 
 This approach avoids risky on-device ML setup while still proving the actual occupancy counting concept.
+
+## Three-Laptop Demo Plan
+
+For a realistic presentation, A-RES can run across three laptops:
+
+1. Edge hub laptop: runs the camera/occupancy pipeline and publishes anonymous count events.
+2. Central coordination laptop: runs FastAPI, dashboard, urgency score, and authority feed.
+3. Authority laptop: opens `/authority` and acts as the AFAD-like receiving terminal.
+
+On the central laptop, run the server with network access:
+
+```bash
+uvicorn src.server.main:app --host 0.0.0.0 --port 8000
+```
+
+Then other laptops can open:
+
+```text
+http://CENTRAL_LAPTOP_IP:8000/dashboard
+http://CENTRAL_LAPTOP_IP:8000/authority
+```
 
 ## Open-Source Stack
 

@@ -209,6 +209,13 @@
                         <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-300" id="overlay-building-profile"></div>
                         <div class="mt-2 flex flex-wrap gap-1" id="overlay-vulnerability-components"></div>
                     </div>
+                    <div class="bg-dark-900/40 rounded-xl p-3 border border-white/5 mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="text-[10px] text-slate-500 uppercase tracking-wider">Urgency Score Breakdown</div>
+                            <div class="text-[10px] text-slate-400" id="overlay-score-confidence">Confidence: --</div>
+                        </div>
+                        <div class="space-y-2" id="overlay-score-breakdown"></div>
+                    </div>
                     <div class="h-40 w-full mb-6">
                         <canvas id="detailChart"></canvas>
                     </div>
@@ -414,6 +421,21 @@
             return `<span class="bg-dark-900/70 text-slate-300 text-[10px] px-1.5 py-0.5 rounded border border-dark-700">${label}: ${formatPercent(value)}</span>`;
         }
 
+        function scoreBar(label, value, weight, colorClass) {
+            const numeric = Math.round(Math.max(0, Math.min(100, Number(value || 0))));
+            return `
+                <div>
+                    <div class="flex justify-between text-[10px] text-slate-400 mb-1">
+                        <span>${label}</span>
+                        <span>${numeric}/100 · weight ${weight}</span>
+                    </div>
+                    <div class="h-1.5 bg-dark-900 rounded-full overflow-hidden border border-white/5">
+                        <div class="h-full ${colorClass}" style="width:${numeric}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
         // --- WebSocket Connection ---
         const socket = new WebSocket('ws://localhost:8000/ws/dashboard');
         
@@ -427,12 +449,15 @@
         function downloadReport() {
             if (lastBuildingsState.length === 0) return alert("No data available to export.");
             
-            const headers = ['Building ID', 'Type', 'Priority', 'Expert Score', 'AI Score', 'Local Alarm', 'Occupancy', 'Vulnerability', 'Building Age', 'Structural Type', 'Floors', 'Adjacency', 'Soil Risk', 'Seismic Hazard', 'PGA (g)', 'Smoke', 'Gas', 'Last Update'];
+            const headers = ['Building ID', 'Type', 'Priority', 'Expert Score', 'AI Score', 'Score Confidence', 'Occupancy Score', 'Hazard Score', 'Vulnerability Score', 'Local Alarm', 'Occupancy', 'Vulnerability', 'Building Age', 'Structural Type', 'Floors', 'Adjacency', 'Soil Risk', 'Seismic Hazard', 'PGA (g)', 'Smoke', 'Gas', 'Last Update'];
             let csvContent = "data:text/csv;charset=utf-8," + headers.join(',') + "\n";
             
             lastBuildingsState.forEach(b => {
+                const breakdown = b.score_breakdown || {};
                 const row = [
-                    b.building_id, b.type, b.priority, b.urgency_score, b.ai_score || '', b.local_alarm_level || 'NORMAL',
+                    b.building_id, b.type, b.priority, b.urgency_score, b.ai_score || '',
+                    b.score_confidence || '', breakdown.occupancy || 0, breakdown.hazards || 0, breakdown.vulnerability || 0,
+                    b.local_alarm_level || 'NORMAL',
                     b.occupancy, formatPercent(b.vulnerability), b.building_age || '', b.structural_type || '',
                     b.floors || '', b.adjacency_type || '', b.soil_risk || '', b.seismic_hazard || '',
                     b.pga.toFixed(4), b.smoke_detected, b.gas_detected, b.last_update
@@ -511,6 +536,13 @@
                         componentBadge('Adjacency', components.adjacency),
                         componentBadge('Soil', components.soil),
                         componentBadge('Seismic', components.seismic_hazard)
+                    ].join('');
+                    const breakdown = b.score_breakdown || {};
+                    document.getElementById('overlay-score-confidence').innerText = `Confidence: ${formatPercent(b.score_confidence ?? 1)}`;
+                    document.getElementById('overlay-score-breakdown').innerHTML = [
+                        scoreBar('Occupancy risk', breakdown.occupancy, '35%', 'bg-indigo-500'),
+                        scoreBar('Fire / gas hazard', breakdown.hazards, '30%', 'bg-critical'),
+                        scoreBar('Building vulnerability', breakdown.vulnerability, '25%', 'bg-medium')
                     ].join('');
                     detailChart.data.datasets[0].data = buildingHistory[b.building_id];
                     detailChart.update('none');
@@ -593,6 +625,7 @@
             const alarmClass = alarmStyles[alarmLevel] || alarmStyles['NORMAL'];
             const alarmReasons = (b.local_alarm_reasons || []).join(', ') || 'monitoring';
             const vulnerability = formatPercent(b.vulnerability);
+            const breakdown = b.score_breakdown || {};
             const buildingProfile = [
                 `Age: ${formatValue(b.building_age)}`,
                 `Structure: ${formatValue(b.structural_type)}`,
@@ -638,6 +671,20 @@
                         <div class="bg-dark-900/30 rounded px-1.5 py-1 border border-white/5 truncate">${formatValue(b.structural_type)}</div>
                         <div class="bg-dark-900/30 rounded px-1.5 py-1 border border-white/5 truncate">${formatValue(b.adjacency_type)}</div>
                         <div class="bg-dark-900/30 rounded px-1.5 py-1 border border-white/5 truncate">${formatValue(b.soil_risk)}</div>
+                    </div>
+                    <div class="mt-2 grid grid-cols-3 gap-1">
+                        <div title="Occupancy risk contribution" class="bg-indigo-500/10 border border-indigo-500/20 rounded px-1.5 py-1">
+                            <div class="text-[8px] uppercase text-indigo-300">Occ</div>
+                            <div class="text-[10px] font-bold text-slate-200">${Math.round(breakdown.occupancy || 0)}</div>
+                        </div>
+                        <div title="Fire and gas hazard contribution" class="bg-critical/10 border border-critical/20 rounded px-1.5 py-1">
+                            <div class="text-[8px] uppercase text-critical">Haz</div>
+                            <div class="text-[10px] font-bold text-slate-200">${Math.round(breakdown.hazards || 0)}</div>
+                        </div>
+                        <div title="Building vulnerability contribution" class="bg-medium/10 border border-medium/20 rounded px-1.5 py-1">
+                            <div class="text-[8px] uppercase text-medium">Vuln</div>
+                            <div class="text-[10px] font-bold text-slate-200">${Math.round(breakdown.vulnerability || 0)}</div>
+                        </div>
                     </div>
                     <div class="mt-2 flex flex-wrap gap-1 items-center">
                         <span title="${alarmReasons}" class="${alarmClass} text-[10px] px-1.5 py-0.5 rounded uppercase font-bold border">Edge Alarm: ${alarmLevel}</span>

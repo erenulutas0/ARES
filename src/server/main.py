@@ -1,5 +1,6 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import paho.mqtt.client as mqtt
 import json
@@ -24,6 +25,8 @@ app.add_middleware(
 dashboard_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "dashboard"))
 if os.path.isdir(dashboard_dir):
     app.mount("/dashboard", StaticFiles(directory=dashboard_dir, html=True), name="dashboard")
+
+authority_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "authority"))
 
 # In-memory store
 building_states = {}
@@ -134,6 +137,8 @@ def on_message(client, userdata, msg):
             "urgency_score": res["score"],
             "ai_score": ai_score,
             "priority": res["priority"],
+            "score_confidence": res["confidence"],
+            "score_breakdown": res["breakdown"],
             "local_alarm_triggered": local_alarm.trigger,
             "local_alarm_level": local_alarm.level,
             "local_alarm_reasons": local_alarm.reasons,
@@ -164,6 +169,53 @@ def read_root():
 @app.get("/buildings")
 def get_buildings():
     return list(building_states.values())
+
+def choose_authority_unit(state):
+    if state.get("gas_detected") or state.get("smoke_detected") or state.get("fire_detected"):
+        return "Fire Department / Gas Response"
+    if state.get("priority") in {"HIGH", "CRITICAL"} and state.get("occupancy", 0) > 0:
+        return "AFAD Search and Rescue"
+    if state.get("vulnerability", 0) >= 0.70:
+        return "Municipal Structural Assessment"
+    return "Monitoring Desk"
+
+@app.get("/authority/alerts")
+def get_authority_alerts():
+    buildings = sorted(
+        building_states.values(),
+        key=lambda x: x.get("urgency_score", 0),
+        reverse=True,
+    )
+    return [
+        {
+            "building_id": b.get("building_id"),
+            "type": b.get("type"),
+            "priority": b.get("priority"),
+            "urgency_score": b.get("urgency_score", 0),
+            "score_confidence": b.get("score_confidence", 1.0),
+            "score_breakdown": b.get("score_breakdown", {}),
+            "occupancy": b.get("occupancy", 0),
+            "vulnerability": b.get("vulnerability", 0),
+            "smoke_detected": b.get("smoke_detected", False),
+            "gas_detected": b.get("gas_detected", False),
+            "local_alarm_level": b.get("local_alarm_level", "NORMAL"),
+            "local_alarm_reasons": b.get("local_alarm_reasons", []),
+            "authority_unit": choose_authority_unit(b),
+            "recommended_action": b.get("local_alarm_action", "Continue monitoring."),
+            "lat": b.get("lat"),
+            "lon": b.get("lon"),
+            "last_update": b.get("last_update"),
+        }
+        for b in buildings
+    ]
+
+@app.get("/authority", response_class=HTMLResponse)
+def authority_terminal():
+    index_path = os.path.join(authority_dir, "index.html")
+    if os.path.exists(index_path):
+        with open(index_path, "r", encoding="utf-8") as handle:
+            return handle.read()
+    return "<h1>A-RES Authority Terminal</h1><p>Authority view is not available.</p>"
 
 @app.websocket("/ws/dashboard")
 async def websocket_endpoint(websocket: WebSocket):

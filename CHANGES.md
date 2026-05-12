@@ -28,3 +28,8 @@
 - **Added:** `tests/test_local_alarm.py` to validate NORMAL, WARNING, and CRITICAL local alarm scenarios.
 - **Added:** `MD_FILES/NEXT_DEVELOPMENT_ROADMAP.md` to focus the next work on video validation, alarm status, latency, and demo recording.
 - **Changed:** Expanded `TODO.md` with concrete next tasks for doorway video validation, local alarm dashboard integration, latency measurement, and demo video recording.
+
+## [2026-05-12] - Edge Hub Architecture and Cost Report
+- **Added:** `MD_FILES/EDGE_HUB_ARCHITECTURE_COST_REPORT_TR.md` and PDF version explaining the updated three-sensor edge-hub architecture, roadmap, and estimated costs.
+- **Added:** `MD_FILES/EDGE_HUB_ARCHITECTURE_ILLUSTRATION.png` for the updated architecture.
+- **Added:** `MD_FILES/EDGE_HUB_VISUAL_PROMPT.md` for generating a polished illustration in Gemini or another visual tool.

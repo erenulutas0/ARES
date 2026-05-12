@@ -27,6 +27,8 @@ A-RES is a university Applied Project Management project that turns buildings in
 | [HYBRID_EDGE_CENTRAL_SYSTEM_EN.md](HYBRID_EDGE_CENTRAL_SYSTEM_EN.md) | English explanation of the hybrid edge + central command system |
 | [HYBRID_EDGE_CENTRAL_SYSTEM_TR.md](HYBRID_EDGE_CENTRAL_SYSTEM_TR.md) | Turkish explanation of the hybrid edge + central command system |
 | [VISUAL_PROMPTS.md](VISUAL_PROMPTS.md) | Prompts for generating system architecture visuals |
+| [EDGE_HUB_ARCHITECTURE_COST_REPORT_TR.md](EDGE_HUB_ARCHITECTURE_COST_REPORT_TR.md) | Updated Turkish report for edge hub architecture, roadmap, and estimated costs |
+| [EDGE_HUB_VISUAL_PROMPT.md](EDGE_HUB_VISUAL_PROMPT.md) | Visual prompt for edge-hub based A-RES architecture |
 | [agents.md](agents.md) | AI assistant context & coding guidelines |
 
 ## Quick Start (Development)

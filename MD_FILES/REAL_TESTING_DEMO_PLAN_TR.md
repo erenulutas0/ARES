@@ -133,6 +133,14 @@ python -m src.edge.demo_sender --central-url http://192.168.1.35:8000 --building
 
 Bu komut gerçek sensör olduğunu iddia etmez. Sadece fire/gas verisi geldiğinde merkezi sistemin urgency score'u yükseltmesini, dashboard'u güncellemesini ve authority terminalinde ilgili birime yönlendirme üretmesini test eder.
 
+Edge laptop ile merkezi laptop arasındaki demo gecikmesi ayrıca ölçülebilir:
+
+```powershell
+python -m src.edge.latency_probe --central-url http://192.168.1.35:8000 --samples 10
+```
+
+Bu çıktı, verinin edge laptop tarafından gönderilip authority feed üzerinde görünmesine kadar geçen yaklaşık süreyi milisaniye cinsinden raporlar. Sınıf demosunda bu tabloyu göstermek, sistemin yalnızca görsel olarak değil, performans açısından da test edildiğini kanıtlar.
+
 ### 4. Dashboard Açma
 
 Merkezi laptopta veya başka bir cihazda:

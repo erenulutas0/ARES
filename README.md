@@ -204,6 +204,12 @@ To simulate a fire/gas emergency when the physical sensor is not available:
 python -m src.edge.demo_sender --central-url http://CENTRAL_LAPTOP_IP:8000 --building-id DEMO-001 --occupancy 18 --smoke --gas
 ```
 
+To measure edge-to-authority demo latency:
+
+```bash
+python -m src.edge.latency_probe --central-url http://CENTRAL_LAPTOP_IP:8000 --samples 10
+```
+
 ## Open-Source Stack
 
 | Project | Role |

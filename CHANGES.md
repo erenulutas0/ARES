@@ -65,3 +65,7 @@
 - **Added:** `/ingest/sensor` and `/ingest/occupancy` HTTP endpoints so an edge laptop can send demo data directly to the central laptop without relying on MQTT setup.
 - **Added:** `src/edge/demo_sender.py` for sending mock occupancy, building profile, smoke, and gas events during the school demo.
 - **Changed:** Updated the real testing plan and README with phone-camera and mock fire/gas demo commands.
+
+## [2026-05-13] - Demo Latency Probe
+- **Added:** `src/edge/latency_probe.py` to measure edge-to-authority HTTP demo latency.
+- **Changed:** Updated the README and real testing plan with the latency measurement command for performance evidence.

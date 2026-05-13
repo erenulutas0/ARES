@@ -32,6 +32,7 @@
 - [x] Expose building vulnerability profile and factors on dashboard cards, overlay, and CSV export
 - [x] Add authority terminal feed for AFAD-like third-laptop demo
 - [x] Add HTTP ingest endpoints and demo edge sender for school-network testing
+- [x] Add HTTP edge-to-authority latency probe for demo performance evidence
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis
@@ -42,6 +43,7 @@
 - [x] Optimization input schema and sample CSV for Industrial Engineering team
 - [ ] Phone-camera doorway video test and manual-vs-detected count comparison
 - [ ] Run HTTP edge sender from a second laptop to the central coordination laptop
+- [ ] Run HTTP latency probe on school Wi-Fi and record min/avg/max latency
 - [ ] Add final architecture figures to the shared Google Docs report
 - [ ] Prepare 1-page CE summary for presentation slides
 - [ ] Update Google Docs report with final CODEX + Claude/Gemini synthesis

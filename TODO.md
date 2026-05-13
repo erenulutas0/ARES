@@ -34,6 +34,7 @@
 - [x] Add HTTP ingest endpoints and demo edge sender for school-network testing
 - [x] Add HTTP edge-to-authority latency probe for demo performance evidence
 - [x] Add HTTP publishing mode to occupancy counter for phone-video demo
+- [x] Integrate Figma frontend as one React app with Edge, Central, and Authority routes
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis

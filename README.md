@@ -204,6 +204,26 @@ http://CENTRAL_LAPTOP_IP:8000/dashboard
 http://CENTRAL_LAPTOP_IP:8000/authority
 ```
 
+### Unified React Frontend
+
+The Figma-based frontend is kept as one app with three routes. Start it on the central laptop:
+
+```bash
+cd frontends
+npm install
+npm run dev -- --host 0.0.0.0 --port 5173
+```
+
+Then open one route on each laptop:
+
+```text
+http://CENTRAL_LAPTOP_IP:5173/edge-hub
+http://CENTRAL_LAPTOP_IP:5173/central
+http://CENTRAL_LAPTOP_IP:5173/authority
+```
+
+The frontend automatically reads the backend from `http://CENTRAL_LAPTOP_IP:8000`. If needed, set `VITE_ARES_API_URL` before starting the frontend.
+
 From the edge laptop, mock sensor and occupancy data can be sent directly to the central laptop:
 
 ```bash

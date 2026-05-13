@@ -27,6 +27,10 @@ ares_mobile/build/
 ares_mobile/.idea/
 ares_mobile/*.iml
 
+# Frontend generated outputs
+frontends/node_modules/
+frontends/dist/
+
 # OS / editor
 .DS_Store
 Thumbs.db

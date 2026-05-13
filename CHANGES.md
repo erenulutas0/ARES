@@ -73,3 +73,8 @@
 ## [2026-05-13] - Occupancy HTTP Publishing
 - **Changed:** `src/edge/occupancy_counter.py` can now publish count events directly to the central laptop via HTTP for the three-laptop demo.
 - **Changed:** Updated demo documentation with the phone-recorded doorway video command.
+
+## [2026-05-13] - Unified Figma Frontend Integration
+- **Added:** Figma-generated React/Vite frontend under `frontends/` with Edge Hub, Central Coordination, and Authority Terminal routes.
+- **Changed:** Connected the Figma frontend to the A-RES backend `/buildings` and `/authority/alerts` APIs.
+- **Changed:** Documented one-app, three-route demo setup for the three laptop presentation.

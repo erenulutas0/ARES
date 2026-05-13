@@ -60,3 +60,8 @@
 - **Added:** `/authority` terminal page for the third-laptop demo scenario.
 - **Changed:** Dashboard now exposes urgency score breakdown factors for occupancy, fire/gas hazards, and building vulnerability.
 - **Added:** `MD_FILES/REAL_TESTING_DEMO_PLAN_TR.md` describing the edge laptop, central coordination laptop, and authority laptop testing setup.
+
+## [2026-05-13] - HTTP Edge Demo Sender
+- **Added:** `/ingest/sensor` and `/ingest/occupancy` HTTP endpoints so an edge laptop can send demo data directly to the central laptop without relying on MQTT setup.
+- **Added:** `src/edge/demo_sender.py` for sending mock occupancy, building profile, smoke, and gas events during the school demo.
+- **Changed:** Updated the real testing plan and README with phone-camera and mock fire/gas demo commands.

@@ -6,7 +6,7 @@ import paho.mqtt.client as mqtt
 import json
 import threading
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from .urgency_engine import calculate_urgency_score
 from .building_vulnerability import calculate_building_vulnerability
 from src.edge.local_alarm import evaluate_local_alarm
@@ -49,102 +49,113 @@ MQTT_TOPICS = [
     ("ares/building/+/occupancy", 1)
 ]
 
+def utc_timestamp():
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+def default_building_state(building_id):
+    return {
+        "building_id": building_id,
+        "occupancy": 0, "pga": 0.0, "vulnerability": 0.5,
+        "building_age": None, "structural_type": "unknown", "floors": None,
+        "adjacency_type": "unknown", "soil_risk": "unknown", "seismic_hazard": "unknown",
+        "vulnerability_components": {},
+        "smoke_detected": False, "gas_detected": False, "temperature": 22.0,
+        "lat": 0.0, "lon": 0.0, "type": "Unknown",
+        "ai_score": 0,
+        "local_alarm_triggered": False,
+        "local_alarm_level": "NORMAL",
+        "local_alarm_reasons": [],
+        "local_alarm_action": "Continue monitoring."
+    }
+
+def update_building_state(topic, payload):
+    building_id = payload.get("building_id")
+    if not building_id:
+        raise ValueError("Payload must include building_id")
+
+    if building_id not in building_states:
+        building_states[building_id] = default_building_state(building_id)
+
+    state = building_states[building_id]
+
+    if "sensor" in topic:
+        state["pga"] = payload.get("pga", state["pga"])
+        state["smoke_detected"] = payload.get("smoke_detected", state["smoke_detected"])
+        state["gas_detected"] = payload.get("gas_detected", state["gas_detected"])
+        state["temperature"] = payload.get("temperature", state["temperature"])
+        state["lat"] = payload.get("lat", state["lat"])
+        state["lon"] = payload.get("lon", state["lon"])
+        state["type"] = payload.get("type", state["type"])
+        state["building_age"] = payload.get("building_age", state["building_age"])
+        state["structural_type"] = payload.get("structural_type", state["structural_type"])
+        state["floors"] = payload.get("floors", state["floors"])
+        state["adjacency_type"] = payload.get("adjacency_type", state["adjacency_type"])
+        state["soil_risk"] = payload.get("soil_risk", state["soil_risk"])
+        state["seismic_hazard"] = payload.get("seismic_hazard", state["seismic_hazard"])
+
+        if "vulnerability" in payload:
+            state["vulnerability"] = payload["vulnerability"]
+        else:
+            vuln = calculate_building_vulnerability(
+                building_age=state["building_age"],
+                structural_type=state["structural_type"],
+                floors=state["floors"],
+                adjacency_type=state["adjacency_type"],
+                soil_risk=state["soil_risk"],
+                seismic_hazard=state["seismic_hazard"],
+            )
+            state["vulnerability"] = vuln["index"]
+            state["vulnerability_components"] = vuln["components"]
+    elif "occupancy" in topic:
+        state["occupancy"] = payload.get("current_count", state["occupancy"])
+
+    # 1. Calculate Rule-Based Score
+    res = calculate_urgency_score(
+        state["pga"], state["vulnerability"], state["occupancy"],
+        smoke_detected=state["smoke_detected"],
+        gas_detected=state["gas_detected"]
+    )
+
+    # 2. Calculate ML Prediction (if available)
+    ai_score = res["score"] # Fallback
+    if ml_model is not None:
+        import pandas as pd
+        features = pd.DataFrame([{
+            'pga': state["pga"],
+            'vulnerability': state["vulnerability"],
+            'occupancy': state["occupancy"],
+            'smoke_detected': int(state["smoke_detected"]),
+            'gas_detected': int(state["gas_detected"]),
+            'fire_detected': int(state["smoke_detected"] or state["gas_detected"])
+        }])
+        ai_score = int(ml_model.predict(features)[0])
+
+    local_alarm = evaluate_local_alarm(
+        pga=state["pga"],
+        smoke_detected=state["smoke_detected"],
+        gas_detected=state["gas_detected"],
+        temperature=state["temperature"],
+    )
+
+    state.update({
+        "urgency_score": res["score"],
+        "ai_score": ai_score,
+        "priority": res["priority"],
+        "score_confidence": res["confidence"],
+        "score_breakdown": res["breakdown"],
+        "local_alarm_triggered": local_alarm.trigger,
+        "local_alarm_level": local_alarm.level,
+        "local_alarm_reasons": local_alarm.reasons,
+        "local_alarm_action": local_alarm.recommended_action,
+        "last_update": utc_timestamp()
+    })
+
+    return state
+
 def on_message(client, userdata, msg):
     try:
         payload = json.loads(msg.payload.decode())
-        topic = msg.topic
-        building_id = payload.get("building_id")
-        if not building_id: return
-
-        if building_id not in building_states:
-            building_states[building_id] = {
-                "building_id": building_id,
-                "occupancy": 0, "pga": 0.0, "vulnerability": 0.5,
-                "building_age": None, "structural_type": "unknown", "floors": None,
-                "adjacency_type": "unknown", "soil_risk": "unknown", "seismic_hazard": "unknown",
-                "vulnerability_components": {},
-                "smoke_detected": False, "gas_detected": False, "temperature": 22.0,
-                "lat": 0.0, "lon": 0.0, "type": "Unknown",
-                "ai_score": 0,
-                "local_alarm_triggered": False,
-                "local_alarm_level": "NORMAL",
-                "local_alarm_reasons": [],
-                "local_alarm_action": "Continue monitoring."
-            }
-
-        state = building_states[building_id]
-
-        if "sensor" in topic:
-            state["pga"] = payload.get("pga", state["pga"])
-            state["smoke_detected"] = payload.get("smoke_detected", state["smoke_detected"])
-            state["gas_detected"] = payload.get("gas_detected", state["gas_detected"])
-            state["temperature"] = payload.get("temperature", state["temperature"])
-            state["lat"] = payload.get("lat", state["lat"])
-            state["lon"] = payload.get("lon", state["lon"])
-            state["type"] = payload.get("type", state["type"])
-            state["building_age"] = payload.get("building_age", state["building_age"])
-            state["structural_type"] = payload.get("structural_type", state["structural_type"])
-            state["floors"] = payload.get("floors", state["floors"])
-            state["adjacency_type"] = payload.get("adjacency_type", state["adjacency_type"])
-            state["soil_risk"] = payload.get("soil_risk", state["soil_risk"])
-            state["seismic_hazard"] = payload.get("seismic_hazard", state["seismic_hazard"])
-
-            if "vulnerability" in payload:
-                state["vulnerability"] = payload["vulnerability"]
-            else:
-                vuln = calculate_building_vulnerability(
-                    building_age=state["building_age"],
-                    structural_type=state["structural_type"],
-                    floors=state["floors"],
-                    adjacency_type=state["adjacency_type"],
-                    soil_risk=state["soil_risk"],
-                    seismic_hazard=state["seismic_hazard"],
-                )
-                state["vulnerability"] = vuln["index"]
-                state["vulnerability_components"] = vuln["components"]
-        elif "occupancy" in topic:
-            state["occupancy"] = payload.get("current_count", state["occupancy"])
-
-        # 1. Calculate Rule-Based Score
-        res = calculate_urgency_score(
-            state["pga"], state["vulnerability"], state["occupancy"],
-            smoke_detected=state["smoke_detected"],
-            gas_detected=state["gas_detected"]
-        )
-        
-        # 2. Calculate ML Prediction (if available)
-        ai_score = res["score"] # Fallback
-        if ml_model is not None:
-            import pandas as pd
-            features = pd.DataFrame([{
-                'pga': state["pga"],
-                'vulnerability': state["vulnerability"],
-                'occupancy': state["occupancy"],
-                'smoke_detected': int(state["smoke_detected"]),
-                'gas_detected': int(state["gas_detected"]),
-                'fire_detected': int(state["smoke_detected"] or state["gas_detected"])
-            }])
-            ai_score = int(ml_model.predict(features)[0])
-
-        local_alarm = evaluate_local_alarm(
-            pga=state["pga"],
-            smoke_detected=state["smoke_detected"],
-            gas_detected=state["gas_detected"],
-            temperature=state["temperature"],
-        )
-        
-        state.update({
-            "urgency_score": res["score"],
-            "ai_score": ai_score,
-            "priority": res["priority"],
-            "score_confidence": res["confidence"],
-            "score_breakdown": res["breakdown"],
-            "local_alarm_triggered": local_alarm.trigger,
-            "local_alarm_level": local_alarm.level,
-            "local_alarm_reasons": local_alarm.reasons,
-            "local_alarm_action": local_alarm.recommended_action,
-            "last_update": datetime.utcnow().isoformat() + "Z"
-        })
+        update_building_state(msg.topic, payload)
 
     except Exception as e:
         print(f"Error in on_message: {e}")
@@ -169,6 +180,16 @@ def read_root():
 @app.get("/buildings")
 def get_buildings():
     return list(building_states.values())
+
+@app.post("/ingest/sensor")
+def ingest_sensor(payload: dict):
+    state = update_building_state("http/sensor", payload)
+    return {"status": "accepted", "building": state}
+
+@app.post("/ingest/occupancy")
+def ingest_occupancy(payload: dict):
+    state = update_building_state("http/occupancy", payload)
+    return {"status": "accepted", "building": state}
 
 def choose_authority_unit(state):
     if state.get("gas_detected") or state.get("smoke_detected") or state.get("fire_detected"):

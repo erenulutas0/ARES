@@ -119,6 +119,20 @@ python -m src.edge.simulator
 
 Kamera hazır olduğunda occupancy pipeline çalıştırılır. Bu pipeline kapı girişindeki canlı görüntüden anonim kişi sayısı üretir.
 
+Eğer MQTT broker kurmak istemiyorsak veya okul ağı sorun çıkarırsa, edge laptop merkezi sisteme HTTP ile doğrudan veri gönderebilir:
+
+```powershell
+python -m src.edge.demo_sender --central-url http://192.168.1.35:8000 --building-id DEMO-001 --occupancy 18
+```
+
+Fiziksel fire/gas sensörü yoksa smoke/gas olayı kontrollü şekilde mock veri olarak gönderilir:
+
+```powershell
+python -m src.edge.demo_sender --central-url http://192.168.1.35:8000 --building-id DEMO-001 --occupancy 18 --smoke --gas
+```
+
+Bu komut gerçek sensör olduğunu iddia etmez. Sadece fire/gas verisi geldiğinde merkezi sistemin urgency score'u yükseltmesini, dashboard'u güncellemesini ve authority terminalinde ilgili birime yönlendirme üretmesini test eder.
+
 ### 4. Dashboard Açma
 
 Merkezi laptopta veya başka bir cihazda:
@@ -145,6 +159,8 @@ Kamera kapının üst veya yan tarafına sabitlenir. Görüntüde kapıdan geçe
 - İki kişi yakın geçerse: takip sistemi iki ayrı ID üretmeye çalışmalıdır.
 
 Test sırasında manuel sayım da tutulur. Örneğin 20 giriş ve 8 çıkış yapıldıysa beklenen sonuç `+12` kişidir. Sistem sonucu bu manuel değer ile karşılaştırılır.
+
+Telefon kamerası bu test için yeterlidir. Telefon bu aşamada akıllı cihaz olarak değil, pratik bir kamera kaynağı olarak kullanılır. Görüntü telefonla kaydedilip laptopta işlenebilir veya telefon IP camera/webcam gibi laptopa bağlanabilir. Daha risksiz sınıf demosu için önce kayıtlı kapı videosu kullanmak, canlı kamera gösterimini ise prova sonrasında yapmak daha güvenlidir.
 
 ## 6. Gizlilik ve Güvenlik Notu
 

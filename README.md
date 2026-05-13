@@ -192,6 +192,18 @@ http://CENTRAL_LAPTOP_IP:8000/dashboard
 http://CENTRAL_LAPTOP_IP:8000/authority
 ```
 
+From the edge laptop, mock sensor and occupancy data can be sent directly to the central laptop:
+
+```bash
+python -m src.edge.demo_sender --central-url http://CENTRAL_LAPTOP_IP:8000 --building-id DEMO-001 --occupancy 18
+```
+
+To simulate a fire/gas emergency when the physical sensor is not available:
+
+```bash
+python -m src.edge.demo_sender --central-url http://CENTRAL_LAPTOP_IP:8000 --building-id DEMO-001 --occupancy 18 --smoke --gas
+```
+
 ## Open-Source Stack
 
 | Project | Role |

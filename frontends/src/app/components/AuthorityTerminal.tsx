@@ -3,376 +3,625 @@ import {
   AlertTriangle,
   MapPin,
   Users,
-  Flame,
-  Wind,
-  Wrench,
+  Building2,
+  Activity,
   Siren,
-  RefreshCw,
-  CheckCircle,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  Radio,
 } from "lucide-react";
 import { fetchAuthorityAlerts, type AresAuthorityAlert } from "../lib/api";
 
-interface EmergencyAlert {
+interface Building {
   id: string;
-  buildingId: string;
-  buildingName: string;
+  name: string;
   location: string;
   occupancy: number;
   urgencyScore: number;
   priority: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
-  recommendedAction: string;
-  responseUnit: string;
-  responseIcon: "fire" | "rescue" | "gas" | "structural";
-  status: "pending" | "dispatched" | "resolved";
+  lat: number;
+  lng: number;
+  status: "active" | "dispatched" | "resolved";
+}
+
+interface DataFeed {
+  id: string;
+  time: string;
+  buildingId: string;
+  message: string;
+  type: "alert" | "update" | "dispatch";
 }
 
 export function AuthorityTerminal() {
-  const [alerts, setAlerts] = useState<EmergencyAlert[]>([
+  const [buildings, setBuildings] = useState<Building[]>([
     {
-      id: "ALR-001",
-      buildingId: "BLD-0847",
-      buildingName: "Residential Complex A",
+      id: "BLD-0847",
+      name: "Residential Complex A",
       location: "District 3, Sector 12",
       occupancy: 47,
       urgencyScore: 87.5,
       priority: "CRITICAL",
-      recommendedAction: "Search and Rescue + Municipal Structural Assessment",
-      responseUnit: "SAR-3, STRUCT-1",
-      responseIcon: "rescue",
-      status: "pending",
+      lat: 50,
+      lng: 30,
+      status: "active",
     },
     {
-      id: "ALR-002",
-      buildingId: "BLD-1203",
-      buildingName: "Office Tower B",
+      id: "BLD-1203",
+      name: "Office Tower B",
       location: "District 1, Sector 5",
       occupancy: 124,
       urgencyScore: 72.3,
-      priority: "HIGH",
-      recommendedAction: "Search and Rescue",
-      responseUnit: "SAR-1",
-      responseIcon: "rescue",
+      priority: "CRITICAL",
+      lat: 35,
+      lng: 45,
       status: "dispatched",
     },
     {
-      id: "ALR-003",
-      buildingId: "BLD-0589",
-      buildingName: "Medical Center C",
+      id: "BLD-0589",
+      name: "Medical Center C",
       location: "District 2, Sector 8",
       occupancy: 89,
       urgencyScore: 68.1,
       priority: "HIGH",
-      recommendedAction: "Municipal Structural Assessment",
-      responseUnit: "STRUCT-2",
-      responseIcon: "structural",
-      status: "pending",
+      lat: 65,
+      lng: 55,
+      status: "active",
     },
     {
-      id: "ALR-004",
-      buildingId: "BLD-2145",
-      buildingName: "School Building D",
+      id: "BLD-2145",
+      name: "School Building D",
       location: "District 4, Sector 15",
       occupancy: 156,
       urgencyScore: 54.2,
+      priority: "HIGH",
+      lat: 45,
+      lng: 70,
+      status: "active",
+    },
+    {
+      id: "BLD-3421",
+      name: "Shopping Mall E",
+      location: "District 5, Sector 20",
+      occupancy: 203,
+      urgencyScore: 41.8,
       priority: "MEDIUM",
-      recommendedAction: "Municipal Structural Assessment",
-      responseUnit: "STRUCT-3",
-      responseIcon: "structural",
-      status: "pending",
+      lat: 70,
+      lng: 35,
+      status: "active",
+    },
+    {
+      id: "BLD-5678",
+      name: "Apartment Complex F",
+      location: "District 6, Sector 22",
+      occupancy: 78,
+      urgencyScore: 38.5,
+      priority: "MEDIUM",
+      lat: 25,
+      lng: 60,
+      status: "active",
+    },
+    {
+      id: "BLD-9012",
+      name: "Hotel G",
+      location: "District 7, Sector 28",
+      occupancy: 95,
+      urgencyScore: 29.3,
+      priority: "LOW",
+      lat: 55,
+      lng: 25,
+      status: "resolved",
     },
   ]);
 
+  const [dataFeeds, setDataFeeds] = useState<DataFeed[]>([
+    { id: "1", time: "14:35:22", buildingId: "BLD-0847", message: "Urgency score increased to 87.5", type: "alert" },
+    { id: "2", time: "14:35:18", buildingId: "BLD-1203", message: "Response unit SAR-1 dispatched", type: "dispatch" },
+    { id: "3", time: "14:35:10", buildingId: "BLD-0589", message: "Occupancy update: 89 persons detected", type: "update" },
+    { id: "4", time: "14:34:55", buildingId: "BLD-2145", message: "Structural vulnerability assessment requested", type: "update" },
+  ]);
+
+  const [hoveredBuilding, setHoveredBuilding] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [lastRefresh, setLastRefresh] = useState(new Date());
-  const [feedStatus, setFeedStatus] = useState<"OPERATIONAL" | "OFFLINE">("OFFLINE");
+  const [feedStatus, setFeedStatus] = useState<"LIVE" | "OFFLINE">("OFFLINE");
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
+
+      // Simulate new data feed every 5 seconds
+      if (Math.random() > 0.7) {
+        const newFeed: DataFeed = {
+          id: Date.now().toString(),
+          time: new Date().toLocaleTimeString(),
+          buildingId: buildings[Math.floor(Math.random() * buildings.length)].id,
+          message: [
+            "Sensor data updated",
+            "Occupancy count refreshed",
+            "Network status confirmed",
+            "Alert threshold checked",
+          ][Math.floor(Math.random() * 4)],
+          type: "update",
+        };
+        setDataFeeds((prev) => [newFeed, ...prev].slice(0, 8));
+      }
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [buildings]);
 
   useEffect(() => {
-    const iconForAlert = (alert: AresAuthorityAlert): EmergencyAlert["responseIcon"] => {
-      if (alert.gas_detected) return "gas";
-      if (alert.smoke_detected) return "fire";
-      if ((alert.authority_unit || "").toLowerCase().includes("structural")) return "structural";
-      return "rescue";
-    };
-
-    const mapAlert = (alert: AresAuthorityAlert, index: number): EmergencyAlert => ({
-      id: `ALR-${String(index + 1).padStart(3, "0")}`,
-      buildingId: alert.building_id,
-      buildingName: alert.type || "Monitored Building",
-      location: alert.lat && alert.lon ? `${alert.lat.toFixed(4)}, ${alert.lon.toFixed(4)}` : "Central feed location",
+    const mapAlert = (alert: AresAuthorityAlert, index: number): Building => ({
+      id: alert.building_id,
+      name: alert.type || "Monitored Building",
+      location: alert.lat && alert.lon ? `${alert.lat.toFixed(4)}, ${alert.lon.toFixed(4)}` : "Central feed",
       occupancy: alert.occupancy || 0,
       urgencyScore: alert.urgency_score || 0,
       priority: alert.priority || "LOW",
-      recommendedAction: alert.recommended_action || "Continue monitoring.",
-      responseUnit: alert.authority_unit || "Monitoring Desk",
-      responseIcon: iconForAlert(alert),
-      status: (alert.priority === "CRITICAL" || alert.priority === "HIGH") ? "pending" : "dispatched",
+      lat: 25 + (index * 11) % 55,
+      lng: 25 + (index * 17) % 55,
+      status: alert.priority === "CRITICAL" || alert.priority === "HIGH" ? "active" : "dispatched",
     });
 
-    const loadAlerts = async () => {
+    const loadLiveAlerts = async () => {
       try {
         const data = await fetchAuthorityAlerts();
         if (data.length > 0) {
-          setAlerts(data.map(mapAlert));
+          const mapped = data.map(mapAlert).sort((a, b) => b.urgencyScore - a.urgencyScore);
+          setBuildings(mapped);
+          setDataFeeds((current) => [
+            {
+              id: `api-${Date.now()}`,
+              time: new Date().toLocaleTimeString(),
+              buildingId: mapped[0].id,
+              message: `Live central feed: ${mapped[0].priority} priority, score ${mapped[0].urgencyScore}`,
+              type: mapped[0].priority === "CRITICAL" || mapped[0].priority === "HIGH" ? "alert" : "update",
+            },
+            ...current.slice(0, 7),
+          ]);
         }
-        setLastRefresh(new Date());
-        setFeedStatus("OPERATIONAL");
+        setFeedStatus("LIVE");
       } catch {
         setFeedStatus("OFFLINE");
       }
     };
 
-    loadAlerts();
-    const timer = setInterval(loadAlerts, 2000);
+    loadLiveAlerts();
+    const timer = setInterval(loadLiveAlerts, 2000);
     return () => clearInterval(timer);
   }, []);
 
-  const getPriorityColor = (priority: string) => {
+  const criticalCount = buildings.filter((b) => b.priority === "CRITICAL").length;
+  const highCount = buildings.filter((b) => b.priority === "HIGH").length;
+  const mediumCount = buildings.filter((b) => b.priority === "MEDIUM").length;
+  const lowCount = buildings.filter((b) => b.priority === "LOW").length;
+  const totalOccupancy = buildings.reduce((sum, b) => sum + b.occupancy, 0);
+  const activeAlerts = buildings.filter((b) => b.status === "active").length;
+
+  const getMarkerColor = (priority: string) => {
     switch (priority) {
       case "CRITICAL":
-        return "bg-red-500/20 border-red-500 text-red-400";
+        return "bg-red-500 border-red-400 shadow-red-500/50";
       case "HIGH":
-        return "bg-orange-500/20 border-orange-500 text-orange-400";
+        return "bg-orange-500 border-orange-400 shadow-orange-500/50";
       case "MEDIUM":
-        return "bg-yellow-500/20 border-yellow-500 text-yellow-400";
+        return "bg-yellow-500 border-yellow-400 shadow-yellow-500/50";
       case "LOW":
-        return "bg-green-500/20 border-green-500 text-green-400";
+        return "bg-green-500 border-green-400 shadow-green-500/50";
       default:
-        return "bg-gray-500/20 border-gray-500 text-gray-400";
+        return "bg-gray-500 border-gray-400 shadow-gray-500/50";
     }
   };
-
-  const getPriorityBadgeColor = (priority: string) => {
-    switch (priority) {
-      case "CRITICAL":
-        return "bg-red-500 text-white";
-      case "HIGH":
-        return "bg-orange-500 text-white";
-      case "MEDIUM":
-        return "bg-yellow-500 text-gray-900";
-      case "LOW":
-        return "bg-green-500 text-white";
-      default:
-        return "bg-gray-500 text-white";
-    }
-  };
-
-  const getResponseIcon = (icon: string) => {
-    switch (icon) {
-      case "fire":
-        return <Flame className="size-5" />;
-      case "gas":
-        return <Wind className="size-5" />;
-      case "structural":
-        return <Wrench className="size-5" />;
-      case "rescue":
-        return <Siren className="size-5" />;
-      default:
-        return <AlertTriangle className="size-5" />;
-    }
-  };
-
-  const pendingAlerts = alerts.filter((a) => a.status === "pending").length;
-  const dispatchedAlerts = alerts.filter((a) => a.status === "dispatched").length;
 
   return (
-    <div className="size-full bg-[#0a0e1a] p-6 overflow-auto">
-      <div className="max-w-[1600px] mx-auto">
+    <div className="size-full bg-[#0a0e1a] flex overflow-hidden">
+      {/* Left Sidebar */}
+      <div className="w-80 border-r border-cyan-900/30 bg-gradient-to-b from-[#0f1419] to-[#0a0e1a] p-4 flex flex-col gap-4 overflow-y-auto">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-4xl font-bold text-cyan-400 mb-2">AFAD Emergency Response Terminal</h1>
-              <p className="text-gray-400">Live Feed from A-RES Central Coordination</p>
-            </div>
-            <div className="text-right">
-              <div className="text-3xl font-mono text-cyan-400 mb-1">{currentTime.toLocaleTimeString()}</div>
-              <div className="flex items-center justify-end gap-2 text-xs text-gray-400">
-                <RefreshCw className="size-3" />
-                <span>Last refresh: {Math.floor((currentTime.getTime() - lastRefresh.getTime()) / 1000)}s ago</span>
-              </div>
-            </div>
-          </div>
+        <div className="mb-2">
+          <h2 className="text-lg font-bold text-cyan-400 mb-1">AFAD Control</h2>
+          <p className="text-xs text-gray-400">Emergency Response Center · {feedStatus}</p>
+        </div>
 
-          {/* Status Bar */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="border border-cyan-500/50 rounded-lg bg-gradient-to-r from-cyan-500/10 to-blue-500/10 p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-gray-400 mb-1">System Status</div>
-                  <div className={`text-2xl font-bold ${feedStatus === "OPERATIONAL" ? "text-green-400" : "text-red-400"}`}>{feedStatus}</div>
-                </div>
-                <CheckCircle className="size-8 text-green-400" />
+        {/* Priority Definitions */}
+        <div className="border border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 p-3">
+          <div className="flex items-center gap-2 mb-3">
+            <AlertTriangle className="size-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-gray-200">Priority Definitions</span>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between p-2 rounded bg-red-500/10 border border-red-500/30">
+              <div className="flex items-center gap-2">
+                <div className="size-3 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-xs text-gray-300">Critical</span>
               </div>
+              <span className="text-lg font-bold text-red-400">{criticalCount}</span>
             </div>
-            <div className="border border-orange-500/50 rounded-lg bg-gradient-to-r from-orange-500/10 to-red-500/10 p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-gray-400 mb-1">Pending Alerts</div>
-                  <div className="text-2xl font-bold text-orange-400">{pendingAlerts}</div>
-                </div>
-                <AlertTriangle className="size-8 text-orange-400" />
+            <div className="flex items-center justify-between p-2 rounded bg-orange-500/10 border border-orange-500/30">
+              <div className="flex items-center gap-2">
+                <div className="size-3 rounded-full bg-orange-500 animate-pulse" />
+                <span className="text-xs text-gray-300">High</span>
               </div>
+              <span className="text-lg font-bold text-orange-400">{highCount}</span>
             </div>
-            <div className="border border-blue-500/50 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-gray-400 mb-1">Dispatched Units</div>
-                  <div className="text-2xl font-bold text-blue-400">{dispatchedAlerts}</div>
-                </div>
-                <Siren className="size-8 text-blue-400" />
+            <div className="flex items-center justify-between p-2 rounded bg-yellow-500/10 border border-yellow-500/30">
+              <div className="flex items-center gap-2">
+                <div className="size-3 rounded-full bg-yellow-500" />
+                <span className="text-xs text-gray-300">Medium</span>
               </div>
+              <span className="text-lg font-bold text-yellow-400">{mediumCount}</span>
+            </div>
+            <div className="flex items-center justify-between p-2 rounded bg-green-500/10 border border-green-500/30">
+              <div className="flex items-center gap-2">
+                <div className="size-3 rounded-full bg-green-500" />
+                <span className="text-xs text-gray-300">Low</span>
+              </div>
+              <span className="text-lg font-bold text-green-400">{lowCount}</span>
             </div>
           </div>
         </div>
 
-        {/* Priority Alerts */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertTriangle className="size-6 text-cyan-400" />
-            <h2 className="text-xl font-bold text-gray-200">Prioritized Emergency Alerts</h2>
+        {/* Key Metrics */}
+        <div className="border border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 p-3">
+          <div className="flex items-center gap-2 mb-3">
+            <Activity className="size-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-gray-200">Key Metrics</span>
+          </div>
+          <div className="space-y-3">
+            <div>
+              <div className="text-xs text-gray-400 mb-1">Total Occupants at Risk</div>
+              <div className="text-2xl font-bold text-cyan-400">{totalOccupancy}</div>
+            </div>
+            <div className="h-px bg-gray-700/50" />
+            <div>
+              <div className="text-xs text-gray-400 mb-1">Active Alerts</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold text-red-400">{activeAlerts}</div>
+                <TrendingUp className="size-4 text-red-400" />
+              </div>
+            </div>
+            <div className="h-px bg-gray-700/50" />
+            <div>
+              <div className="text-xs text-gray-400 mb-1">Buildings Monitored</div>
+              <div className="text-2xl font-bold text-gray-300">{buildings.length}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Priority Events */}
+        <div className="border border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 p-3 flex-1 flex flex-col">
+          <div className="flex items-center gap-2 mb-3">
+            <Radio className="size-4 text-cyan-400 animate-pulse" />
+            <span className="text-xs font-semibold text-gray-200">Recent Priority Events</span>
+          </div>
+          <div className="space-y-2 overflow-y-auto flex-1">
+            {buildings
+              .filter((b) => b.priority === "CRITICAL" || b.priority === "HIGH")
+              .slice(0, 5)
+              .map((building) => (
+                <div
+                  key={building.id}
+                  className="p-2 rounded bg-gray-800/50 border border-gray-700/50 hover:border-cyan-500/50 transition-all cursor-pointer"
+                  onMouseEnter={() => setHoveredBuilding(building.id)}
+                  onMouseLeave={() => setHoveredBuilding(null)}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-mono text-cyan-400">{building.id}</span>
+                    <span
+                      className={`text-xs font-bold ${
+                        building.priority === "CRITICAL" ? "text-red-400" : "text-orange-400"
+                      }`}
+                    >
+                      {building.urgencyScore.toFixed(1)}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-300 mb-1">{building.name}</div>
+                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <Users className="size-3" />
+                    <span>{building.occupancy} persons</span>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Center - Map */}
+      <div className="flex-1 flex flex-col p-4">
+        {/* Map Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <MapPin className="size-6 text-cyan-400" />
+            <div>
+              <h1 className="text-2xl font-bold text-cyan-400">Real-time Threat Map</h1>
+              <p className="text-xs text-gray-400">Istanbul Metropolitan Area</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-xl font-mono text-cyan-400">{currentTime.toLocaleTimeString()}</div>
+            <div className="text-xs text-gray-400">{currentTime.toLocaleDateString()}</div>
+          </div>
+        </div>
+
+        {/* Map Container */}
+        <div className="flex-1 border-2 border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-950 to-gray-900 relative overflow-hidden shadow-2xl shadow-cyan-500/10">
+          {/* Grid Background */}
+          <div className="absolute inset-0 opacity-30">
+            <div
+              className="w-full h-full"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to right, #0ea5e9 1px, transparent 1px), linear-gradient(to bottom, #0ea5e9 1px, transparent 1px)",
+                backgroundSize: "50px 50px",
+              }}
+            />
           </div>
 
-          {alerts.map((alert) => (
+          {/* Diagonal Lines */}
+          <svg className="absolute inset-0 w-full h-full opacity-10">
+            <defs>
+              <pattern id="diagonalLines" width="20" height="20" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="20" y2="20" stroke="#0ea5e9" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#diagonalLines)" />
+          </svg>
+
+          {/* Building Markers */}
+          {buildings.map((building) => (
             <div
-              key={alert.id}
-              className={`border-2 rounded-lg p-5 ${getPriorityColor(alert.priority)} transition-all hover:shadow-xl`}
+              key={building.id}
+              className="absolute group cursor-pointer z-10"
+              style={{
+                left: `${building.lng}%`,
+                top: `${building.lat}%`,
+                transform: "translate(-50%, -50%)",
+              }}
+              onMouseEnter={() => setHoveredBuilding(building.id)}
+              onMouseLeave={() => setHoveredBuilding(null)}
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${getPriorityBadgeColor(alert.priority)}`}>
-                      {alert.priority}
-                    </span>
-                    <span className="font-mono text-sm text-cyan-400">{alert.id}</span>
-                    {alert.status === "dispatched" && (
-                      <span className="px-2 py-0.5 rounded bg-blue-500/30 border border-blue-500 text-xs text-blue-300">
-                        DISPATCHED
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-100 mb-1">{alert.buildingName}</h3>
-                  <div className="flex items-center gap-4 text-sm text-gray-300">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="size-4" />
-                      <span>{alert.location}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-gray-400">Building ID:</span>
-                      <span className="font-mono text-cyan-400">{alert.buildingId}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm text-gray-400 mb-1">Urgency Score</div>
-                  <div className="text-5xl font-bold text-white">{alert.urgencyScore.toFixed(1)}</div>
-                </div>
-              </div>
+              {/* Pulse Ring */}
+              <div
+                className={`absolute inset-0 rounded-full ${
+                  building.priority === "CRITICAL" || building.priority === "HIGH" ? "animate-ping" : ""
+                } ${getMarkerColor(building.priority)} opacity-75`}
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  margin: "-12px",
+                }}
+              />
 
-              <div className="grid grid-cols-3 gap-4 mb-4 pb-4 border-b border-gray-700/50">
-                <div>
-                  <div className="text-xs text-gray-400 mb-1">Occupancy</div>
-                  <div className="flex items-center gap-2">
-                    <Users className="size-5 text-gray-300" />
-                    <span className="text-xl font-bold text-gray-100">{alert.occupancy}</span>
-                    <span className="text-sm text-gray-400">persons</span>
-                  </div>
-                </div>
-                <div className="col-span-2">
-                  <div className="text-xs text-gray-400 mb-1">Recommended Action</div>
-                  <div className="flex items-center gap-2">
-                    {getResponseIcon(alert.responseIcon)}
-                    <span className="text-base font-semibold text-gray-100">{alert.recommendedAction}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs text-gray-400 mb-1">Assigned Response Unit</div>
-                  <div className="font-mono text-base font-semibold text-cyan-400">{alert.responseUnit}</div>
-                </div>
-                {alert.status === "pending" && (
-                  <button
-                    className="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all shadow-lg shadow-cyan-500/20"
-                    onClick={() => {
-                      setAlerts(
-                        alerts.map((a) =>
-                          a.id === alert.id ? { ...a, status: "dispatched" as const } : a
-                        )
-                      );
-                    }}
-                  >
-                    Dispatch Unit
-                  </button>
+              {/* Marker */}
+              <div
+                className={`size-4 rounded-full border-2 ${getMarkerColor(
+                  building.priority
+                )} shadow-lg transition-all ${hoveredBuilding === building.id ? "scale-150" : "scale-100"}`}
+              >
+                {building.status === "dispatched" && (
+                  <div className="absolute inset-0 rounded-full border-2 border-blue-400 animate-pulse" />
                 )}
               </div>
+
+              {/* Tooltip */}
+              {hoveredBuilding === building.id && (
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-gray-900/95 border border-cyan-500 rounded-lg p-3 shadow-2xl backdrop-blur-sm whitespace-nowrap z-20">
+                  <div className="font-mono text-xs text-cyan-400 mb-1">{building.id}</div>
+                  <div className="text-sm font-bold text-gray-100 mb-1">{building.name}</div>
+                  <div className="text-xs text-gray-400 mb-2">{building.location}</div>
+                  <div className="flex items-center gap-4 text-xs">
+                    <div>
+                      <span className="text-gray-500">Urgency:</span>
+                      <span
+                        className={`ml-1 font-bold ${
+                          building.priority === "CRITICAL"
+                            ? "text-red-400"
+                            : building.priority === "HIGH"
+                            ? "text-orange-400"
+                            : building.priority === "MEDIUM"
+                            ? "text-yellow-400"
+                            : "text-green-400"
+                        }`}
+                      >
+                        {building.urgencyScore.toFixed(1)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Occupancy:</span>
+                      <span className="ml-1 text-cyan-400 font-mono">{building.occupancy}</span>
+                    </div>
+                  </div>
+                  {building.status === "dispatched" && (
+                    <div className="mt-2 pt-2 border-t border-gray-700">
+                      <span className="text-xs text-blue-400 font-semibold">✓ Unit Dispatched</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ))}
+
+          {/* Map Coordinates */}
+          <div className="absolute bottom-4 left-4 text-xs font-mono text-gray-600">
+            41.0082° N, 28.9784° E
+          </div>
+        </div>
+      </div>
+
+      {/* Right Sidebar */}
+      <div className="w-80 border-l border-cyan-900/30 bg-gradient-to-b from-[#0f1419] to-[#0a0e1a] p-4 flex flex-col gap-4 overflow-y-auto">
+        {/* Risk Overview Chart */}
+        <div className="border border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 p-3">
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp className="size-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-gray-200">Risk Overview</span>
+          </div>
+          <div className="space-y-2">
+            <div>
+              <div className="flex items-center justify-between mb-1 text-xs">
+                <span className="text-red-400">Critical</span>
+                <span className="text-red-400 font-mono">{criticalCount}/{buildings.length}</span>
+              </div>
+              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-500"
+                  style={{ width: `${(criticalCount / buildings.length) * 100}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-1 text-xs">
+                <span className="text-orange-400">High</span>
+                <span className="text-orange-400 font-mono">{highCount}/{buildings.length}</span>
+              </div>
+              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-500"
+                  style={{ width: `${(highCount / buildings.length) * 100}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-1 text-xs">
+                <span className="text-yellow-400">Medium</span>
+                <span className="text-yellow-400 font-mono">{mediumCount}/{buildings.length}</span>
+              </div>
+              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-yellow-500 to-yellow-600 transition-all duration-500"
+                  style={{ width: `${(mediumCount / buildings.length) * 100}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-1 text-xs">
+                <span className="text-green-400">Low</span>
+                <span className="text-green-400 font-mono">{lowCount}/{buildings.length}</span>
+              </div>
+              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-500"
+                  style={{ width: `${(lowCount / buildings.length) * 100}%` }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Map Preview */}
-        <div className="mt-6 border border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-sm p-4">
+        {/* Risk Categories Pie Chart */}
+        <div className="border border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 p-3">
           <div className="flex items-center gap-2 mb-3">
-            <MapPin className="size-5 text-cyan-400" />
-            <span className="text-sm font-semibold text-gray-200">Alert Locations Overview</span>
+            <Activity className="size-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-gray-200">Risk Categories</span>
           </div>
-          <div className="relative h-48 bg-gray-950 rounded-lg border border-gray-700/50 overflow-hidden">
-            {/* Grid background */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="w-full h-full" style={{
-                backgroundImage: 'linear-gradient(to right, #1e3a8a 1px, transparent 1px), linear-gradient(to bottom, #1e3a8a 1px, transparent 1px)',
-                backgroundSize: '30px 30px'
-              }} />
+          <div className="flex items-center justify-center py-4">
+            <svg width="140" height="140" viewBox="0 0 140 140" className="transform -rotate-90">
+              <circle
+                cx="70"
+                cy="70"
+                r="60"
+                fill="none"
+                stroke="#1f2937"
+                strokeWidth="20"
+              />
+              <circle
+                cx="70"
+                cy="70"
+                r="60"
+                fill="none"
+                stroke="#ef4444"
+                strokeWidth="20"
+                strokeDasharray={`${(criticalCount / buildings.length) * 377} 377`}
+                strokeDashoffset="0"
+                className="transition-all duration-500"
+              />
+              <circle
+                cx="70"
+                cy="70"
+                r="60"
+                fill="none"
+                stroke="#f97316"
+                strokeWidth="20"
+                strokeDasharray={`${(highCount / buildings.length) * 377} 377`}
+                strokeDashoffset={`-${(criticalCount / buildings.length) * 377}`}
+                className="transition-all duration-500"
+              />
+              <circle
+                cx="70"
+                cy="70"
+                r="60"
+                fill="none"
+                stroke="#eab308"
+                strokeWidth="20"
+                strokeDasharray={`${(mediumCount / buildings.length) * 377} 377`}
+                strokeDashoffset={`-${((criticalCount + highCount) / buildings.length) * 377}`}
+                className="transition-all duration-500"
+              />
+              <circle
+                cx="70"
+                cy="70"
+                r="60"
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="20"
+                strokeDasharray={`${(lowCount / buildings.length) * 377} 377`}
+                strokeDashoffset={`-${((criticalCount + highCount + mediumCount) / buildings.length) * 377}`}
+                className="transition-all duration-500"
+              />
+            </svg>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="flex items-center gap-1">
+              <div className="size-2 rounded-full bg-red-500" />
+              <span className="text-gray-400">Critical</span>
             </div>
+            <div className="flex items-center gap-1">
+              <div className="size-2 rounded-full bg-orange-500" />
+              <span className="text-gray-400">High</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="size-2 rounded-full bg-yellow-500" />
+              <span className="text-gray-400">Medium</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="size-2 rounded-full bg-green-500" />
+              <span className="text-gray-400">Low</span>
+            </div>
+          </div>
+        </div>
 
-            {/* Alert markers */}
-            {alerts.map((alert, index) => (
+        {/* Active Alerts Count */}
+        <div className="border border-red-500/30 rounded-lg bg-gradient-to-br from-red-900/20 to-red-800/10 p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <Siren className="size-4 text-red-400 animate-pulse" />
+            <span className="text-xs font-semibold text-gray-200">Active Alerts</span>
+          </div>
+          <div className="text-4xl font-bold text-red-400">{activeAlerts}</div>
+          <div className="text-xs text-gray-400 mt-1">Requires immediate action</div>
+        </div>
+
+        {/* Live Data Feed */}
+        <div className="border border-cyan-500/30 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 p-3 flex-1 flex flex-col">
+          <div className="flex items-center gap-2 mb-3">
+            <Clock className="size-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-gray-200">Live Data Feed</span>
+            <div className="size-2 rounded-full bg-green-400 animate-pulse ml-auto" />
+          </div>
+          <div className="space-y-1 overflow-y-auto flex-1">
+            {dataFeeds.map((feed) => (
               <div
-                key={alert.id}
-                className="absolute group"
-                style={{
-                  left: `${15 + (index * 20)}%`,
-                  top: `${40 + (index % 2) * 15}%`,
-                }}
+                key={feed.id}
+                className="text-xs font-mono p-2 rounded bg-gray-800/50 border border-gray-700/50 animate-fadeIn"
               >
-                <div
-                  className={`size-3 rounded-full ${
-                    alert.priority === "CRITICAL"
-                      ? "bg-red-500"
-                      : alert.priority === "HIGH"
-                      ? "bg-orange-500"
-                      : alert.priority === "MEDIUM"
-                      ? "bg-yellow-500"
-                      : "bg-green-500"
-                  } animate-pulse shadow-lg`}
-                />
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-900/95 border border-cyan-500/50 px-2 py-1 rounded backdrop-blur-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity text-xs">
-                  <div className="text-gray-200 font-semibold">{alert.buildingId}</div>
-                  <div className={`font-bold ${
-                    alert.priority === "CRITICAL"
-                      ? "text-red-400"
-                      : alert.priority === "HIGH"
-                      ? "text-orange-400"
-                      : alert.priority === "MEDIUM"
-                      ? "text-yellow-400"
-                      : "text-green-400"
-                  }`}>
-                    {alert.priority}
-                  </div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-gray-500">{feed.time}</span>
+                  {feed.type === "alert" && <span className="text-red-400">⚠</span>}
+                  {feed.type === "dispatch" && <span className="text-blue-400">→</span>}
+                  {feed.type === "update" && <span className="text-cyan-400">•</span>}
                 </div>
+                <div className="text-cyan-400">{feed.buildingId}</div>
+                <div className="text-gray-300">{feed.message}</div>
               </div>
             ))}
-
-            <div className="absolute top-2 left-2 bg-gray-900/90 border border-cyan-500/50 px-2 py-1 rounded backdrop-blur-sm text-xs text-cyan-400 font-mono">
-              Istanbul Region
-            </div>
           </div>
         </div>
       </div>

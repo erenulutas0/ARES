@@ -158,6 +158,18 @@ python src/edge/simulator.py
 python src/edge/occupancy_counter.py --source path/to/doorway_video.mp4
 ```
 
+For the three-laptop demo, first register the mock building profile on the central laptop:
+
+```bash
+python -m src.edge.demo_sender --central-url http://CENTRAL_LAPTOP_IP:8000 --building-id DEMO-001 --occupancy 0
+```
+
+Then run the phone-recorded doorway video and publish anonymous occupancy counts over HTTP:
+
+```bash
+python -m src.edge.occupancy_counter --source path/to/doorway_video.mp4 --transport http --central-url http://CENTRAL_LAPTOP_IP:8000 --building-id DEMO-001
+```
+
 ## Phone Camera Test Plan
 
 For the MVP, the phone is used as a practical camera source:

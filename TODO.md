@@ -33,6 +33,7 @@
 - [x] Add authority terminal feed for AFAD-like third-laptop demo
 - [x] Add HTTP ingest endpoints and demo edge sender for school-network testing
 - [x] Add HTTP edge-to-authority latency probe for demo performance evidence
+- [x] Add HTTP publishing mode to occupancy counter for phone-video demo
 
 ## 🟡 Week 4: Data Analysis & Refinement
 - [ ] USGS Global/Japan Data Analysis

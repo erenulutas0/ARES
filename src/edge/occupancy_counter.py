@@ -3,15 +3,28 @@ import json
 import time
 import argparse
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from ultralytics import YOLO
 import paho.mqtt.client as mqtt
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
+def utc_timestamp():
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
 class OccupancyCounter:
-    def __init__(self, model_path="yolo11n.pt", line_y_pct=0.6, building_id="B-001", camera_id="CAM-001"):
+    def __init__(
+        self,
+        model_path="yolo11n.pt",
+        line_y_pct=0.6,
+        building_id="B-001",
+        camera_id="CAM-001",
+        central_url=None,
+        transport="mqtt",
+    ):
         """
         Initializes the YOLO11n + ByteTrack Occupancy Counter.
         """
@@ -20,6 +33,8 @@ class OccupancyCounter:
         self.line_y_pct = line_y_pct
         self.building_id = building_id
         self.camera_id = camera_id
+        self.central_url = central_url.rstrip("/") if central_url else None
+        self.transport = transport
         
         # Tracking state
         self.track_sides = {} # {track_id: "outside" | "inside"}
@@ -28,11 +43,13 @@ class OccupancyCounter:
         self.exit_count = 0
         self.seq_counter = 0
         
-        # MQTT Setup
+        # MQTT/HTTP setup
         self.mqtt_broker = os.getenv("MQTT_BROKER", "broker.hivemq.com")
         self.mqtt_topic = f"ares/building/{self.building_id}/occupancy"
-        self.client = mqtt.Client()
-        self.connect_mqtt()
+        self.client = None
+        if self.transport in {"mqtt", "both"}:
+            self.client = mqtt.Client()
+            self.connect_mqtt()
 
     def connect_mqtt(self):
         try:
@@ -129,7 +146,7 @@ class OccupancyCounter:
         event = {
             "building_id": self.building_id,
             "camera_id": self.camera_id,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": utc_timestamp(),
             "seq": self.seq_counter,
             "event_type": "count_delta",
             "delta": delta,
@@ -137,16 +154,40 @@ class OccupancyCounter:
             "current_count": current_count,
             "confidence": 0.95
         }
-        self.client.publish(self.mqtt_topic, json.dumps(event), qos=1)
+        if self.transport in {"mqtt", "both"} and self.client is not None:
+            self.client.publish(self.mqtt_topic, json.dumps(event), qos=1)
+
+        if self.transport in {"http", "both"}:
+            if not self.central_url:
+                print("HTTP transport selected but --central-url was not provided.")
+                return
+            try:
+                response = requests.post(f"{self.central_url}/ingest/occupancy", json=event, timeout=3)
+                response.raise_for_status()
+            except requests.RequestException as exc:
+                print(f"HTTP occupancy publish failed: {exc}")
+
+        if self.transport == "offline":
+            print(f"OFFLINE_EVENT {json.dumps(event)}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=str, default="0", help="Video file path or camera index")
     parser.add_argument("--line", type=float, default=0.6, help="Line position (0.0 to 1.0)")
+    parser.add_argument("--building-id", default="DEMO-001")
+    parser.add_argument("--camera-id", default="CAM-DEMO-001")
+    parser.add_argument("--central-url", help="Central laptop URL, e.g. http://192.168.1.35:8000")
+    parser.add_argument("--transport", choices=["mqtt", "http", "both", "offline"], default="mqtt")
     args = parser.parse_args()
 
     # Handle numeric camera index vs string file path
     src = int(args.source) if args.source.isdigit() else args.source
     
-    counter = OccupancyCounter(line_y_pct=args.line)
+    counter = OccupancyCounter(
+        line_y_pct=args.line,
+        building_id=args.building_id,
+        camera_id=args.camera_id,
+        central_url=args.central_url,
+        transport=args.transport,
+    )
     counter.process_video(source=src)

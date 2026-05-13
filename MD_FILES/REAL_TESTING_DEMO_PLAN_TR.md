@@ -119,6 +119,20 @@ python -m src.edge.simulator
 
 Kamera hazır olduğunda occupancy pipeline çalıştırılır. Bu pipeline kapı girişindeki canlı görüntüden anonim kişi sayısı üretir.
 
+Telefonla kayıt alınan kapı videosu üzerinden HTTP ile merkezi laptopa sayım göndermek için önce mock bina profili kaydedilir:
+
+```powershell
+python -m src.edge.demo_sender --central-url http://192.168.1.35:8000 --building-id DEMO-001 --occupancy 0
+```
+
+Sonra video dosyası işlenir:
+
+```powershell
+python -m src.edge.occupancy_counter --source doorway_test.mp4 --transport http --central-url http://192.168.1.35:8000 --building-id DEMO-001
+```
+
+Bu komutta telefon yalnızca kamera kaynağıdır. İnsan tespiti ve takip laptop üzerinde yapılır.
+
 Eğer MQTT broker kurmak istemiyorsak veya okul ağı sorun çıkarırsa, edge laptop merkezi sisteme HTTP ile doğrudan veri gönderebilir:
 
 ```powershell

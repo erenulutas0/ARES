@@ -69,3 +69,7 @@
 ## [2026-05-13] - Demo Latency Probe
 - **Added:** `src/edge/latency_probe.py` to measure edge-to-authority HTTP demo latency.
 - **Changed:** Updated the README and real testing plan with the latency measurement command for performance evidence.
+
+## [2026-05-13] - Occupancy HTTP Publishing
+- **Changed:** `src/edge/occupancy_counter.py` can now publish count events directly to the central laptop via HTTP for the three-laptop demo.
+- **Changed:** Updated demo documentation with the phone-recorded doorway video command.
